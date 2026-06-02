@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-row">
+        <a class="brand" href="/">SoundWave</a>
+        <nav class="main-nav">
+          <a href="/">Inicio</a>
+          <a href="/artistas/nuevo">Nuevo artista</a>
+          <a href="/api/artistas" target="_blank" rel="noreferrer">API artistas</a>
+          <a href="/api/canciones/shuffle" target="_blank" rel="noreferrer">API shuffle</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="shell page-content">
+      {{{body}}}
+    </main>
+  </body>
+</html>

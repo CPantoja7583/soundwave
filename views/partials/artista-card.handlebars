@@ -1,0 +1,22 @@
+<article class="artist-card">
+  <div class="artist-card__body">
+    <p class="eyebrow">{{genero}}</p>
+    <h3>{{nombre}}</h3>
+    <p>{{pais}}</p>
+    <dl class="artist-stats">
+      <div>
+        <dt>Canciones</dt>
+        <dd>{{totalCanciones}}</dd>
+      </div>
+      <div>
+        <dt>Catalogo</dt>
+        <dd>{{duracionTotal}}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="artist-card__actions">
+    <a class="button" href="/artistas/{{id}}">Ver detalle</a>
+    <a class="button button--ghost" href="/artistas/{{id}}/editar">Editar</a>
+  </div>
+</article>

@@ -1,0 +1,78 @@
+<section class="hero">
+  <div>
+    <p class="eyebrow">Proyecto grupal</p>
+    <h1>Catalogo musical colaborativo</h1>
+    <p class="lede">
+      SoundWave mezcla API REST, vistas Handlebars y Sequelize en una base que el equipo puede seguir expandiendo.
+    </p>
+  </div>
+
+  <div class="hero-actions">
+    <a class="button" href="/artistas/nuevo">Agregar artista</a>
+    {{#if shuffle}}
+      <div class="shuffle-card">
+        <p class="eyebrow">Shuffle sugerido</p>
+        <strong>{{shuffle.titulo}}</strong>
+        <span>{{shuffle.artista.nombre}} · {{shuffle.duracionTexto}}</span>
+      </div>
+    {{/if}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Filtrar por genero</h2>
+  </div>
+
+  <form class="filter-form" method="GET" action="/">
+    <select name="genero">
+      <option value="">Todos los generos</option>
+      {{#each generos}}
+        <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
+      {{/each}}
+    </select>
+    <button class="button" type="submit">Aplicar</button>
+    <a class="button button--ghost" href="/">Limpiar</a>
+  </form>
+</section>
+
+<section class="grid-layout">
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Artistas</h2>
+      <span>{{artistas.length}} encontrados</span>
+    </div>
+
+    {{#if artistas.length}}
+      <div class="artist-grid">
+        {{#each artistas}}
+          {{> artista-card}}
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="empty-state">No hay artistas para este filtro todavia.</p>
+    {{/if}}
+  </div>
+
+  <aside class="panel sidebar">
+    <div class="panel-head">
+      <h2>Top 10</h2>
+    </div>
+
+    {{#if topCanciones.length}}
+      <ol class="top-list">
+        {{#each topCanciones}}
+          <li>
+            <div>
+              <strong>{{titulo}}</strong>
+              <span>{{artista.nombre}} · {{duracionTexto}}</span>
+            </div>
+            <span>{{reproducciones}} plays</span>
+          </li>
+        {{/each}}
+      </ol>
+    {{else}}
+      <p class="empty-state">Aun no hay canciones en ranking.</p>
+    {{/if}}
+  </aside>
+</section>

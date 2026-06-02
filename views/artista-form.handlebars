@@ -1,0 +1,31 @@
+<section class="panel form-panel">
+  <div class="panel-head">
+    <h1>{{formTitle}}</h1>
+  </div>
+
+  {{#if errorMessage}}
+    <p class="error-text">{{errorMessage}}</p>
+  {{/if}}
+
+  <form class="stack-form" method="POST" action="{{formAction}}">
+    <label>
+      Nombre
+      <input type="text" name="nombre" value="{{artist.nombre}}" required />
+    </label>
+
+    <label>
+      Genero
+      <input type="text" name="genero" value="{{artist.genero}}" required />
+    </label>
+
+    <label>
+      Pais
+      <input type="text" name="pais" value="{{artist.pais}}" required />
+    </label>
+
+    <div class="form-actions">
+      <button class="button" type="submit">{{submitLabel}}</button>
+      <a class="button button--ghost" href="/">Volver</a>
+    </div>
+  </form>
+</section>

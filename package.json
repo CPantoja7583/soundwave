@@ -1,0 +1,28 @@
+{
+  "name": "soundwave",
+  "version": "1.0.0",
+  "description": "Plataforma colaborativa de gestion musical con Express, Sequelize y Handlebars.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed": "node scripts/seed.js",
+    "check": "node --check app.js && node --check config/database.js && node --check models/index.js && node --check controllers/api/artistaController.js && node --check controllers/api/cancionController.js && node --check controllers/web/homeController.js && node --check controllers/web/artistaViewController.js && node --check routes/api.js && node --check routes/web.js && node --check scripts/seed.js"
+  },
+  "keywords": [
+    "express",
+    "sequelize",
+    "handlebars",
+    "mvc",
+    "music"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-handlebars": "^8.0.1",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
+  }
+}

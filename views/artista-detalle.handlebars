@@ -1,0 +1,84 @@
+{{#if errorMessage}}
+  <section class="panel">
+    <p class="error-text">{{errorMessage}}</p>
+  </section>
+{{else}}
+  <section class="detail-hero panel">
+    <div>
+      <p class="eyebrow">{{artist.genero}}</p>
+      <h1>{{artist.nombre}}</h1>
+      <p>{{artist.pais}}</p>
+    </div>
+
+    <div class="detail-stats">
+      <div>
+        <span>Canciones</span>
+        <strong>{{artist.canciones.length}}</strong>
+      </div>
+      <div>
+        <span>Duracion total</span>
+        <strong>{{artist.duracionTotal}}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid-layout">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Canciones</h2>
+        <a class="button button--ghost" href="/artistas/{{artist.id}}/editar">Editar artista</a>
+      </div>
+
+      {{#if artist.canciones.length}}
+        <div class="song-list">
+          {{#each artist.canciones}}
+            <article class="song-row">
+              <div>
+                <strong>{{titulo}}</strong>
+                <p>{{album}} · {{duracionTexto}}</p>
+              </div>
+
+              <div class="song-actions">
+                <span>{{reproducciones}} plays</span>
+                <form method="POST" action="/canciones/{{id}}/reproducir">
+                  <button class="button" type="submit">Reproducir</button>
+                </form>
+                <form method="POST" action="/canciones/{{id}}/eliminar">
+                  <button class="button button--danger" type="submit">Eliminar</button>
+                </form>
+              </div>
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty-state">Este artista aun no tiene canciones cargadas.</p>
+      {{/if}}
+    </div>
+
+    <aside class="panel sidebar">
+      <div class="panel-head">
+        <h2>Agregar cancion</h2>
+      </div>
+
+      <form class="stack-form" method="POST" action="/artistas/{{artist.id}}/canciones">
+        <label>
+          Titulo
+          <input type="text" name="titulo" required />
+        </label>
+        <label>
+          Album
+          <input type="text" name="album" required />
+        </label>
+        <label>
+          Duracion (segundos)
+          <input type="number" name="duracion" min="1" required />
+        </label>
+        <button class="button" type="submit">Guardar cancion</button>
+      </form>
+
+      <form class="danger-zone" method="POST" action="/artistas/{{artist.id}}/eliminar">
+        <button class="button button--danger" type="submit">Eliminar artista</button>
+      </form>
+    </aside>
+  </section>
+{{/if}}
