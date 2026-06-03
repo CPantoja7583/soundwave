@@ -1,17 +1,18 @@
 # SoundWave
 
-Proyecto grupal base para una plataforma de gestion musical estilo Spotify usando Node.js, Express, Sequelize y Handlebars.
+Proyecto grupal base para una plataforma de gestion musical estilo Spotify usando Node.js, Express, Sequelize, PostgreSQL y Handlebars.
 
 ## Que incluye esta base
 
 - arquitectura MVC simple y legible
-- Sequelize con SQLite para desarrollo local
+- Sequelize conectado a PostgreSQL
 - modelos `Artista` y `Cancion`
 - relacion uno a muchos entre artistas y canciones
 - API REST para artistas y canciones
 - vistas Handlebars para home, detalle y formularios
 - extras utiles: top 10, shuffle y contador de reproducciones
 - comentarios cortos para ayudar al equipo a entender la estructura
+- `docker-compose.yml` para levantar PostgreSQL rapido en desarrollo
 
 ## Instalacion
 
@@ -19,17 +20,77 @@ Proyecto grupal base para una plataforma de gestion musical estilo Spotify usand
 npm install
 ```
 
+## Levantar PostgreSQL con Docker
+
+1. Asegurate de tener Docker Desktop abierto.
+2. Desde la carpeta del proyecto, levanta la base:
+
+```bash
+docker compose up -d
+```
+
+3. Verifica que el contenedor este arriba:
+
+```bash
+docker compose ps
+```
+
+Deberias ver el servicio `postgres` o el contenedor `soundwave-postgres` en estado `running`.
+
 ## Configuracion
 
 1. Copia `.env.example` a `.env`
-2. Ajusta el puerto si hace falta
+2. Ajusta el puerto de la app si hace falta
+3. Si no cambiaste `docker-compose.yml`, puedes dejar las credenciales tal cual
 
 Contenido sugerido:
 
 ```env
 PORT=3000
-DB_STORAGE=./data/soundwave.sqlite
+DB_HOST=127.0.0.1
+DB_PORT=5433
+DB_NAME=soundwave
+DB_USER=postgres
+DB_PASSWORD=postgres
 ```
+
+## Flujo recomendado
+
+1. Levanta PostgreSQL:
+
+```bash
+docker compose up -d
+```
+
+2. Inicia la app:
+
+```bash
+npm start
+```
+
+3. Abre:
+
+```text
+http://127.0.0.1:3000
+```
+
+La primera vez, Sequelize crea tablas y la semilla inicial agrega artistas y canciones si la base esta vacia.
+
+## Apagar o reiniciar la base
+
+Detener la base:
+
+```bash
+docker compose down
+```
+
+Detenerla y borrar los datos persistidos:
+
+```bash
+docker compose down -v
+```
+
+Usa `down -v` solo si quieres reiniciar la base desde cero para pruebas, demo o evaluacion.
 
 ## Ejecucion
 
@@ -82,7 +143,7 @@ npm run check
 
 - revisar `config/database.js`
 - entender `models/Artista.js`, `models/Cancion.js` y `models/index.js`
-- extender validaciones o migrar a otra base de datos si el equipo lo pide
+- extender validaciones o ajustar la configuracion PostgreSQL si el equipo lo pide
 
 ### Integrante 2: API REST
 
