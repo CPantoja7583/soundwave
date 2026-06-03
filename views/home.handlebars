@@ -1,7 +1,7 @@
 <section class="hero">
   <div>
     <p class="eyebrow">Proyecto grupal</p>
-    <h1>Catalogo musical colaborativo</h1>
+    <h1 class="hero-title">Catalogo musical colaborativo</h1>
     <p class="lede">
       SoundWave mezcla API REST, vistas Handlebars y Sequelize en una base que el equipo puede seguir expandiendo.
     </p>
@@ -13,11 +13,17 @@
       <div class="shuffle-card">
         <p class="eyebrow">Shuffle sugerido</p>
         <strong>{{shuffle.titulo}}</strong>
-        <span>{{shuffle.artista.nombre}} · {{shuffle.duracionTexto}}</span>
+        <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
       </div>
     {{/if}}
   </div>
 </section>
+
+{{#if feedback}}
+  <section class="notice notice--{{feedback.tone}}" aria-live="polite">
+    <p>{{feedback.message}}</p>
+  </section>
+{{/if}}
 
 <section class="panel">
   <div class="panel-head">
@@ -25,7 +31,8 @@
   </div>
 
   <form class="filter-form" method="GET" action="/">
-    <select name="genero">
+    <label class="filter-label" for="genero-filter">Genero</label>
+    <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
       <option value="">Todos los generos</option>
       {{#each generos}}
         <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
@@ -40,7 +47,7 @@
   <div class="panel">
     <div class="panel-head">
       <h2>Artistas</h2>
-      <span>{{artistas.length}} encontrados</span>
+      <span class="count-pill">{{artistas.length}} encontrados</span>
     </div>
 
     {{#if artistas.length}}
@@ -65,9 +72,9 @@
           <li>
             <div>
               <strong>{{titulo}}</strong>
-              <span>{{artista.nombre}} · {{duracionTexto}}</span>
+              <span>{{artista.nombre}} &middot; {{duracionTexto}}</span>
             </div>
-            <span>{{reproducciones}} plays</span>
+            <span>{{reproducciones}} reproducciones</span>
           </li>
         {{/each}}
       </ol>

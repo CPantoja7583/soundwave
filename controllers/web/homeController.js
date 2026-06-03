@@ -1,6 +1,21 @@
 const { Sequelize } = require("sequelize");
 const { Artista, Cancion } = require("../../models");
 
+function getHomeFeedback(status) {
+  const feedbackByStatus = {
+    "artist-created": {
+      tone: "success",
+      message: "Artista creado correctamente."
+    },
+    "artist-deleted": {
+      tone: "success",
+      message: "Artista eliminado correctamente."
+    }
+  };
+
+  return feedbackByStatus[status] || null;
+}
+
 function secondsToMinutes(seconds) {
   const safeSeconds = Number(seconds) || 0;
   const minutes = Math.floor(safeSeconds / 60);
@@ -24,6 +39,7 @@ function enrichArtista(artista) {
 
 exports.renderHome = async (req, res) => {
   const genero = String(req.query.genero || "").trim();
+  const status = String(req.query.status || "").trim();
   const where = genero ? { genero } : undefined;
 
   const artistas = await Artista.findAll({
@@ -51,6 +67,7 @@ exports.renderHome = async (req, res) => {
 
   return res.render("home", {
     pageTitle: "SoundWave",
+    feedback: getHomeFeedback(status),
     artistas: artistas.map(enrichArtista),
     generos: generos.map((item) => item.genero),
     filtroGenero: genero,

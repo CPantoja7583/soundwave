@@ -20,6 +20,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: var(--bg);
   color: var(--text);
+  -webkit-text-size-adjust: 100%;
 }
 
 a {
@@ -43,12 +44,13 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 18px 0;
+  padding: 16px 0 8px;
 }
 
 .brand {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .main-nav {
@@ -56,6 +58,22 @@ a {
   flex-wrap: wrap;
   gap: 12px;
   color: var(--muted);
+  font-weight: 600;
+}
+
+.utility-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-top: 1px solid rgba(219, 214, 206, 0.7);
+}
+
+.utility-label {
+  font-weight: 700;
+  color: var(--text);
 }
 
 .page-content {
@@ -92,7 +110,20 @@ a {
 .detail-hero h1,
 .form-panel h1 {
   margin: 0 0 12px;
+  line-height: 1.05;
+}
+
+.hero-title {
+  font-size: 2.6rem;
+  max-width: 11ch;
+}
+
+.detail-title {
   font-size: 2rem;
+}
+
+.form-title {
+  font-size: 1.55rem;
 }
 
 .lede {
@@ -100,6 +131,7 @@ a {
   max-width: 58ch;
   color: var(--muted);
   line-height: 1.5;
+  font-size: 1.02rem;
 }
 
 .hero-actions {
@@ -116,11 +148,36 @@ a {
   background: var(--surface-2);
   display: grid;
   gap: 6px;
+  border: 1px solid rgba(219, 214, 206, 0.9);
 }
 
 .panel {
   padding: 22px;
   margin-bottom: 24px;
+}
+
+.notice {
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.notice p {
+  margin: 0;
+}
+
+.notice--success {
+  background: rgba(31, 122, 90, 0.08);
+  border-color: rgba(31, 122, 90, 0.2);
+  color: var(--accent-dark);
+}
+
+.notice--error {
+  background: rgba(182, 66, 66, 0.08);
+  border-color: rgba(182, 66, 66, 0.2);
+  color: #7e2222;
 }
 
 .panel-head {
@@ -136,6 +193,15 @@ a {
   margin: 0;
 }
 
+.count-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .filter-form,
 .form-actions,
 .song-actions {
@@ -143,6 +209,10 @@ a {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+
+.filter-label {
+  font-weight: 600;
 }
 
 .grid-layout {
@@ -158,6 +228,10 @@ a {
   gap: 14px;
 }
 
+.artist-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .artist-card,
 .song-row {
   display: flex;
@@ -166,7 +240,16 @@ a {
   padding: 18px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--surface-2);
+}
+
+.artist-card {
+  background: linear-gradient(180deg, #fcfbf7 0%, #f5f1e9 100%);
+  align-items: flex-start;
+}
+
+.song-row {
+  background: var(--surface);
+  align-items: center;
 }
 
 .artist-card__body h3,
@@ -174,11 +257,35 @@ a {
   margin: 0 0 6px;
 }
 
+.artist-card__body {
+  display: grid;
+  gap: 10px;
+}
+
+.artist-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .artist-stats,
 .detail-stats {
   display: flex;
   gap: 18px;
   flex-wrap: wrap;
+}
+
+.artist-stats {
+  gap: 14px;
+}
+
+.artist-stats > div,
+.detail-stats > div {
+  min-width: 96px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(219, 214, 206, 0.9);
 }
 
 .artist-stats dt,
@@ -194,9 +301,26 @@ a {
   margin: 0;
 }
 
+.artist-stats dd,
+.detail-stats strong,
+.play-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.song-meta {
+  font-size: 0.94rem;
+}
+
 .stack-form {
   display: grid;
   gap: 14px;
+}
+
+.form-intro,
+.danger-copy {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .stack-form label {
@@ -228,6 +352,7 @@ select {
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .button--ghost {
@@ -238,6 +363,39 @@ select {
 
 .button--danger {
   background: var(--danger);
+}
+
+a:hover,
+.main-nav a:hover,
+.utility-row a:hover {
+  color: var(--accent-dark);
+}
+
+.button:hover {
+  background: var(--accent-dark);
+}
+
+.button--ghost:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.button--danger:hover {
+  background: #972f2f;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(31, 122, 90, 0.28);
+  outline-offset: 2px;
+}
+
+input:hover,
+select:hover {
+  border-color: var(--muted);
 }
 
 .top-list {
@@ -252,6 +410,7 @@ select {
   gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
+  align-items: center;
 }
 
 .error-text {
@@ -275,5 +434,9 @@ select {
   .header-row {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .artist-grid {
+    grid-template-columns: 1fr;
   }
 }

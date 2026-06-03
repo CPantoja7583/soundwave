@@ -1,12 +1,18 @@
 {{#if errorMessage}}
   <section class="panel">
-    <p class="error-text">{{errorMessage}}</p>
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
   </section>
 {{else}}
+  {{#if feedback}}
+    <section class="notice notice--{{feedback.tone}}" aria-live="polite">
+      <p>{{feedback.message}}</p>
+    </section>
+  {{/if}}
+
   <section class="detail-hero panel">
     <div>
       <p class="eyebrow">{{artist.genero}}</p>
-      <h1>{{artist.nombre}}</h1>
+      <h1 class="detail-title">{{artist.nombre}}</h1>
       <p>{{artist.pais}}</p>
     </div>
 
@@ -35,15 +41,15 @@
             <article class="song-row">
               <div>
                 <strong>{{titulo}}</strong>
-                <p>{{album}} · {{duracionTexto}}</p>
+                <p class="song-meta">{{album}} &middot; {{duracionTexto}}</p>
               </div>
 
               <div class="song-actions">
-                <span>{{reproducciones}} plays</span>
+                <span class="play-count">{{reproducciones}} reproducciones</span>
                 <form method="POST" action="/canciones/{{id}}/reproducir">
                   <button class="button" type="submit">Reproducir</button>
                 </form>
-                <form method="POST" action="/canciones/{{id}}/eliminar">
+                <form method="POST" action="/canciones/{{id}}/eliminar" onsubmit="return confirm('Eliminar esta cancion?');">
                   <button class="button button--danger" type="submit">Eliminar</button>
                 </form>
               </div>
@@ -63,20 +69,22 @@
       <form class="stack-form" method="POST" action="/artistas/{{artist.id}}/canciones">
         <label>
           Titulo
-          <input type="text" name="titulo" required />
+          <input type="text" name="titulo" autocomplete="off" required />
         </label>
         <label>
           Album
-          <input type="text" name="album" required />
+          <input type="text" name="album" autocomplete="off" required />
         </label>
         <label>
           Duracion (segundos)
-          <input type="number" name="duracion" min="1" required />
+          <input type="number" name="duracion" min="1" inputmode="numeric" required />
         </label>
         <button class="button" type="submit">Guardar cancion</button>
       </form>
 
-      <form class="danger-zone" method="POST" action="/artistas/{{artist.id}}/eliminar">
+      <p class="danger-copy">Esta accion borra el artista y todas las canciones asociadas.</p>
+
+      <form class="danger-zone" method="POST" action="/artistas/{{artist.id}}/eliminar" onsubmit="return confirm('Eliminar este artista y todas sus canciones?');">
         <button class="button button--danger" type="submit">Eliminar artista</button>
       </form>
     </aside>

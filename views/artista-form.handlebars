@@ -1,26 +1,28 @@
 <section class="panel form-panel">
   <div class="panel-head">
-    <h1>{{formTitle}}</h1>
+    <h1 class="form-title">{{formTitle}}</h1>
   </div>
 
+  <p class="form-intro">{{formIntro}}</p>
+
   {{#if errorMessage}}
-    <p class="error-text">{{errorMessage}}</p>
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
   {{/if}}
 
   <form class="stack-form" method="POST" action="{{formAction}}">
     <label>
       Nombre
-      <input type="text" name="nombre" value="{{artist.nombre}}" required />
+      <input type="text" name="nombre" value="{{artist.nombre}}" autocomplete="name" required />
     </label>
 
     <label>
       Genero
-      <input type="text" name="genero" value="{{artist.genero}}" required />
+      <input type="text" name="genero" value="{{artist.genero}}" autocomplete="off" required />
     </label>
 
     <label>
       Pais
-      <input type="text" name="pais" value="{{artist.pais}}" required />
+      <input type="text" name="pais" value="{{artist.pais}}" autocomplete="country-name" required />
     </label>
 
     <div class="form-actions">

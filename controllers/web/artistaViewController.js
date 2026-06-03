@@ -1,5 +1,32 @@
 const { Artista, Cancion } = require("../../models");
 
+function getDetailFeedback(status) {
+  const feedbackByStatus = {
+    "artist-updated": {
+      tone: "success",
+      message: "Artista actualizado correctamente."
+    },
+    "song-created": {
+      tone: "success",
+      message: "Cancion guardada correctamente."
+    },
+    "song-deleted": {
+      tone: "success",
+      message: "Cancion eliminada correctamente."
+    },
+    "song-played": {
+      tone: "success",
+      message: "Reproduccion registrada."
+    },
+    "song-error": {
+      tone: "error",
+      message: "No pudimos guardar la cancion. Revisa los datos e intentalo otra vez."
+    }
+  };
+
+  return feedbackByStatus[status] || null;
+}
+
 function secondsToMinutes(seconds) {
   const safeSeconds = Number(seconds) || 0;
   const minutes = Math.floor(safeSeconds / 60);
@@ -30,6 +57,7 @@ exports.renderNuevoArtista = (req, res) => {
     pageTitle: "Nuevo artista",
     formTitle: "Crear artista",
     submitLabel: "Guardar artista",
+    formIntro: "Completa los datos principales para sumar un artista al catalogo.",
     artist: {
       nombre: "",
       genero: "",
@@ -42,12 +70,13 @@ exports.renderNuevoArtista = (req, res) => {
 exports.crearArtista = async (req, res) => {
   try {
     await Artista.create(normalizeArtistaPayload(req.body));
-    return res.redirect("/");
+    return res.redirect("/?status=artist-created");
   } catch (error) {
     return res.status(400).render("artista-form", {
       pageTitle: "Nuevo artista",
       formTitle: "Crear artista",
       submitLabel: "Guardar artista",
+      formIntro: "Completa los datos principales para sumar un artista al catalogo.",
       artist: normalizeArtistaPayload(req.body),
       formAction: "/artistas",
       errorMessage: "Revisa nombre, genero y pais antes de guardar."
@@ -77,6 +106,7 @@ exports.renderEditarArtista = async (req, res) => {
     pageTitle: `Editar ${artista.nombre}`,
     formTitle: "Editar artista",
     submitLabel: "Guardar cambios",
+    formIntro: "Ajusta nombre, genero o pais sin salir del flujo del catalogo.",
     artist: artista.get({ plain: true }),
     formAction: `/artistas/${artista.id}/editar`
   });
@@ -91,12 +121,13 @@ exports.actualizarArtista = async (req, res) => {
 
   try {
     await artista.update(normalizeArtistaPayload(req.body));
-    return res.redirect(`/artistas/${artista.id}`);
+    return res.redirect(`/artistas/${artista.id}?status=artist-updated`);
   } catch (error) {
     return res.status(400).render("artista-form", {
       pageTitle: `Editar ${artista.nombre}`,
       formTitle: "Editar artista",
       submitLabel: "Guardar cambios",
+      formIntro: "Ajusta nombre, genero o pais sin salir del flujo del catalogo.",
       artist: {
         ...artista.get({ plain: true }),
         ...normalizeArtistaPayload(req.body)
@@ -114,10 +145,11 @@ exports.eliminarArtista = async (req, res) => {
     await artista.destroy();
   }
 
-  return res.redirect("/");
+  return res.redirect("/?status=artist-deleted");
 };
 
 exports.renderDetalleArtista = async (req, res) => {
+  const status = String(req.query.status || "").trim();
   const artista = await Artista.findByPk(req.params.id, {
     include: [{ model: Cancion, as: "canciones" }],
     order: [[{ model: Cancion, as: "canciones" }, "titulo", "ASC"]]
@@ -139,6 +171,7 @@ exports.renderDetalleArtista = async (req, res) => {
 
   return res.render("artista-detalle", {
     pageTitle: artist.nombre,
+    feedback: getDetailFeedback(status),
     artist: {
       ...artist,
       duracionTotal: secondsToMinutes(totalSeconds),
@@ -160,10 +193,10 @@ exports.crearCancion = async (req, res) => {
   try {
     await Cancion.create(normalizeCancionPayload(req.body, artista.id));
   } catch (error) {
-    return res.status(400).redirect(`/artistas/${artista.id}?error=cancion`);
+    return res.status(400).redirect(`/artistas/${artista.id}?status=song-error`);
   }
 
-  return res.redirect(`/artistas/${artista.id}`);
+  return res.redirect(`/artistas/${artista.id}?status=song-created`);
 };
 
 exports.eliminarCancion = async (req, res) => {
@@ -176,7 +209,7 @@ exports.eliminarCancion = async (req, res) => {
   const artistaId = cancion.artistaId;
   await cancion.destroy();
 
-  return res.redirect(`/artistas/${artistaId}`);
+  return res.redirect(`/artistas/${artistaId}?status=song-deleted`);
 };
 
 exports.reproducirCancion = async (req, res) => {
@@ -188,5 +221,5 @@ exports.reproducirCancion = async (req, res) => {
 
   await cancion.increment("reproducciones", { by: 1 });
 
-  return res.redirect(`/artistas/${cancion.artistaId}`);
+  return res.redirect(`/artistas/${cancion.artistaId}?status=song-played`);
 };
