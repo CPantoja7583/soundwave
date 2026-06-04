@@ -47,10 +47,10 @@
               <div class="song-actions">
                 <span class="play-count">{{reproducciones}} reproducciones</span>
                 <form method="POST" action="/canciones/{{id}}/reproducir">
-                  <button class="button" type="submit">Reproducir</button>
+                <button class="btn-play" type="submit">▶ Reproducir</button>
                 </form>
                 <form method="POST" action="/canciones/{{id}}/eliminar" onsubmit="return confirm('Eliminar esta cancion?');">
-                  <button class="button button--danger" type="submit">Eliminar</button>
+                  <button class="btn-danger" type="submit">Eliminar</button>
                 </form>
               </div>
             </article>
@@ -79,13 +79,13 @@
           Duracion (segundos)
           <input type="number" name="duracion" min="1" inputmode="numeric" required />
         </label>
-        <button class="button" type="submit">Guardar cancion</button>
+        <button class="btn-save" type="submit">Guardar canción</button>
       </form>
 
       <p class="danger-copy">Esta accion borra el artista y todas las canciones asociadas.</p>
 
       <form class="danger-zone" method="POST" action="/artistas/{{artist.id}}/eliminar" onsubmit="return confirm('Eliminar este artista y todas sus canciones?');">
-        <button class="button button--danger" type="submit">Eliminar artista</button>
+        <button class="btn-danger" type="submit">Eliminar artista</button>
       </form>
     </aside>
   </section>
