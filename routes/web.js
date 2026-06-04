@@ -5,6 +5,7 @@ const artistaViewController = require("../controllers/web/artistaViewController"
 const router = express.Router();
 
 router.get("/", homeController.renderHome);
+router.get("/artistas/genero/:genero", artistasController.renderBuscarPorGenero);
 
 router.get("/artistas/nuevo", artistaViewController.renderNuevoArtista);
 router.post("/artistas", artistaViewController.crearArtista);
