@@ -8,9 +8,7 @@
   </div>
 
  <div class="shuffle-card">
-
   <p class="eyebrow">Shuffle sugerido</p>
-
   <div class="shuffle-main">
     <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
 
@@ -18,8 +16,9 @@
       <strong>{{shuffle.titulo}}</strong>
       <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
     </div>
-  </div>
 
+  <a class="shuffle-btn">Shuffle</a>
+  </div>
 </div>
 </section>
 
@@ -35,15 +34,14 @@
   </div>
 
   <form class="filter-form" method="GET" action="/">
-    <label class="filter-label" for="genero-filter">Genero</label>
     <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
       <option value="">Todos los generos</option>
       {{#each generos}}
         <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
       {{/each}}
     </select>
-    <button class="button" type="submit">Aplicar</button>
-    <a class="button button--ghost" href="/">Limpiar</a>
+  <button class="btn-filter-apply" type="submit">Aplicar</button>
+  <a class="btn-filter-clear" href="/">Limpiar</a>
   </form>
 </section>
 
@@ -65,25 +63,27 @@
     {{/if}}
   </div>
 
-  <aside class="panel sidebar">
-    <div class="panel-head">
-      <h2>Top 10</h2>
-    </div>
+<aside class="panel sidebar">
+  <div class="panel-head">
+    <h2>Top 10</h2>
+  </div>
 
-    {{#if topCanciones.length}}
-      <ol class="top-list">
-        {{#each topCanciones}}
-          <li>
-            <div>
-              <strong>{{titulo}}</strong>
-              <span>{{artista.nombre}} &middot; {{duracionTexto}}</span>
-            </div>
-            <span>{{reproducciones}} reproducciones</span>
-          </li>
-        {{/each}}
-      </ol>
-    {{else}}
-      <p class="empty-state">Aun no hay canciones en ranking.</p>
-    {{/if}}
-  </aside>
+  {{#if topCanciones.length}}
+    <ol class="top-list">
+      {{#each topCanciones}}
+        <li>
+          <span class="top-num"></span>
+          <div class="top-info">
+            <strong>{{titulo}}</strong>
+            <span>{{artista.nombre}} &middot; {{duracionTexto}}</span>
+          </div>
+          <span class="top-plays">{{reproducciones}}</span>
+        </li>
+      {{/each}}
+    </ol>
+  {{else}}
+    <p class="empty-state">Aun no hay canciones en ranking.</p>
+  {{/if}}
+</aside>
 </section>
+

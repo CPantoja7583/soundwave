@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
 const { Artista, Cancion } = require("../../models");
 
+// Normaliza y sanitiza los campos del body para crear una canción
 function normalizeCancionPayload(body = {}, artistaId) {
   return {
     titulo: String(body.titulo || "").trim(),
@@ -10,6 +11,7 @@ function normalizeCancionPayload(body = {}, artistaId) {
   };
 }
 
+// Construye un mensaje de error legible a partir de errores de validación de Sequelize
 function buildValidationMessage(error) {
   if (!error || !error.errors) {
     return "Datos invalidos.";
@@ -18,6 +20,7 @@ function buildValidationMessage(error) {
   return error.errors.map((item) => item.message).join(" ");
 }
 
+// GET /api/artistas/:id/canciones — retorna todas las canciones de un artista
 exports.listarPorArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id, {
     include: [{ model: Cancion, as: "canciones" }]
@@ -36,6 +39,7 @@ exports.listarPorArtista = async (req, res) => {
   });
 };
 
+// POST /api/artistas/:id/canciones — crea una nueva canción asociada a un artista
 exports.crearPorArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -62,6 +66,7 @@ exports.crearPorArtista = async (req, res) => {
   }
 };
 
+// DELETE /api/canciones/:id — elimina una canción por su id
 exports.eliminarCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
@@ -80,6 +85,7 @@ exports.eliminarCancion = async (req, res) => {
   });
 };
 
+// POST /api/canciones/:id/reproducir — incrementa en 1 el contador de reproducciones
 exports.reproducirCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
@@ -100,6 +106,7 @@ exports.reproducirCancion = async (req, res) => {
   });
 };
 
+// GET /api/canciones/shuffle — retorna una canción aleatoria con su artista
 exports.obtenerShuffle = async (req, res) => {
   const cancion = await Cancion.findOne({
     include: [{ model: Artista, as: "artista" }],
