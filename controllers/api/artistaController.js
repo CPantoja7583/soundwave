@@ -108,3 +108,31 @@ exports.eliminarArtista = async (req, res) => {
     message: "Artista eliminado."
   });
 };
+
+exports.buscarPorGenero = async (req, res) => {
+  try {
+    const { genero } = req.params;
+
+    const artistas = await Artista.findAll({
+      where: { genero: genero.trim() },
+      order: [["nombre", "ASC"]]
+    });
+
+    if (artistas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: `No se encontraron artistas del género ${genero}.`
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      data: artistas
+    });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      message: "Error al buscar artistas por género."
+    });
+  }
+};
