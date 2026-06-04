@@ -4,6 +4,7 @@ const cancionController = require("../controllers/api/cancionController");
 
 const router = express.Router();
 
+router.get("/genero/:genero", artistaController.buscarPorGenero);
 router.get("/artistas", artistaController.listarArtistas);
 router.get("/artistas/:id", artistaController.obtenerArtista);
 router.post("/artistas", artistaController.crearArtista);
