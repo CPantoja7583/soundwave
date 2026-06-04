@@ -3,15 +3,21 @@
     <p class="eyebrow">{{genero}}</p>
     <h3>{{nombre}}</h3>
     <p>{{pais}}</p>
+
     <dl class="artist-stats">
-      <div>
-        <dt>Canciones</dt>
-        <dd>{{totalCanciones}}</dd>
-      </div>
-      <div>
-        <dt>Duracion total</dt>
-        <dd>{{duracionTotal}}</dd>
-      </div>
+
+      <div class="stat">
+          <img src="/img/music-logo.svg" alt="icono musica" class="stat-icon">
+          <dt>Canciones</dt>
+          <dd>{{totalCanciones}}</dd>
+        </div>
+
+      <div class="stat">
+        <img src="/img/time-logo.svg" alt="icono musica" class="stat-icon">
+          <dt>Duracion total</dt>
+          <dd>{{duracionTotal}}</dd>
+        </div>
+
     </dl>
   </div>
 

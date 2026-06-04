@@ -7,16 +7,20 @@
     </p>
   </div>
 
-  <div class="hero-actions">
-    <a class="button" href="/artistas/nuevo">Agregar artista</a>
-    {{#if shuffle}}
-      <div class="shuffle-card">
-        <p class="eyebrow">Shuffle sugerido</p>
-        <strong>{{shuffle.titulo}}</strong>
-        <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
-      </div>
-    {{/if}}
+ <div class="shuffle-card">
+
+  <p class="eyebrow">Shuffle sugerido</p>
+
+  <div class="shuffle-main">
+    <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
+
+    <div class="shuffle-text">
+      <strong>{{shuffle.titulo}}</strong>
+      <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
+    </div>
   </div>
+
+</div>
 </section>
 
 {{#if feedback}}
