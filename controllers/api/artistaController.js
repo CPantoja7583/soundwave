@@ -1,5 +1,6 @@
 const { Artista, Cancion } = require("../../models");
 
+// Construye un mensaje de error legible a partir de errores de validación de Sequelize
 function buildValidationMessage(error) {
   if (!error || !error.errors) {
     return "Datos invalidos.";
@@ -8,6 +9,7 @@ function buildValidationMessage(error) {
   return error.errors.map((item) => item.message).join(" ");
 }
 
+// Normaliza y sanitiza los campos del body para crear o actualizar un artista
 function normalizeArtistaPayload(body = {}) {
   return {
     nombre: String(body.nombre || "").trim(),
@@ -16,6 +18,7 @@ function normalizeArtistaPayload(body = {}) {
   };
 }
 
+// GET /api/artistas — retorna todos los artistas ordenados por nombre
 exports.listarArtistas = async (req, res) => {
   const artistas = await Artista.findAll({
     order: [["nombre", "ASC"]]
@@ -27,6 +30,7 @@ exports.listarArtistas = async (req, res) => {
   });
 };
 
+// GET /api/artistas/:id — retorna un artista con sus canciones
 exports.obtenerArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id, {
     include: [{ model: Cancion, as: "canciones" }],
@@ -46,6 +50,7 @@ exports.obtenerArtista = async (req, res) => {
   });
 };
 
+// POST /api/artistas — crea un nuevo artista
 exports.crearArtista = async (req, res) => {
   const payload = normalizeArtistaPayload(req.body);
 
@@ -65,6 +70,7 @@ exports.crearArtista = async (req, res) => {
   }
 };
 
+// PUT /api/artistas/:id — actualiza los datos de un artista existente
 exports.actualizarArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -91,6 +97,7 @@ exports.actualizarArtista = async (req, res) => {
   }
 };
 
+// DELETE /api/artistas/:id — elimina un artista por su id
 exports.eliminarArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
