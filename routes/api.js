@@ -4,6 +4,8 @@ const cancionController = require("../controllers/api/cancionController");
 
 const router = express.Router();
 
+// Estas rutas forman la API REST del proyecto.
+// Su trabajo es devolver JSON, no renderizar paginas HTML.
 router.get("/genero/:genero", artistaController.buscarPorGenero);
 router.get("/artistas", artistaController.listarArtistas);
 router.get("/artistas/:id", artistaController.obtenerArtista);

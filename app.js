@@ -8,9 +8,13 @@ const apiRoutes = require("./routes/api");
 const { sequelize } = require("./models");
 const { seedDatabase } = require("./scripts/seed");
 
+// Creamos la aplicacion principal de Express.
+// Desde aqui configuramos middlewares, rutas y el arranque del servidor.
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
+// Handlebars sera el motor de vistas del proyecto.
+// El helper "eq" sirve para comparar valores dentro de las plantillas.
 const hbs = create({
   extname: ".handlebars",
   helpers: {
@@ -20,21 +24,33 @@ const hbs = create({
   }
 });
 
+// Le indicamos a Express como renderizar vistas y donde encontrarlas.
 app.engine(".handlebars", hbs.engine);
 app.set("view engine", ".handlebars");
 app.set("views", path.join(__dirname, "views"));
 
+// Middlewares base:
+// - express.json() lee cuerpos JSON
+// - express.urlencoded() lee formularios HTML
+// - express.static() expone CSS e imagenes al navegador
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Ruta de salud para comprobar rapido que la aplicacion esta levantada.
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true, message: "SoundWave arriba y sonando." });
 });
 
+// Separamos las rutas por responsabilidad:
+// - "/" usa controladores web que renderizan vistas o redirigen
+// - "/api" usa controladores REST que responden JSON
 app.use("/", webRoutes);
 app.use("/api", apiRoutes);
 
+// Middleware global de errores.
+// Si el fallo ocurre en la API devolvemos JSON.
+// Si ocurre en la parte web devolvemos una vista amigable.
 app.use((error, req, res, next) => {
   console.error(error);
 
@@ -61,6 +77,8 @@ app.use((error, req, res, next) => {
 
 async function startServer() {
   try {
+    // sync() crea las tablas segun los modelos si aun no existen.
+    // Luego seedDatabase agrega datos iniciales solo cuando la base esta vacia.
     await sequelize.sync();
     await seedDatabase();
 
@@ -73,6 +91,8 @@ async function startServer() {
   }
 }
 
+// Esta condicion permite importar la app en pruebas sin iniciar el servidor
+// automaticamente. Solo se levanta si ejecutamos "node app.js" directamente.
 if (require.main === module) {
   startServer();
 }

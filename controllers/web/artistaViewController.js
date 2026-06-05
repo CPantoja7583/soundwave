@@ -1,5 +1,7 @@
 const { Artista, Cancion } = require("../../models");
 
+// Igual que en home, traducimos estados cortos de la URL
+// a mensajes que la interfaz pueda mostrar.
 function getDetailFeedback(status) {
   const feedbackByStatus = {
     "artist-updated": {
@@ -27,6 +29,7 @@ function getDetailFeedback(status) {
   return feedbackByStatus[status] || null;
 }
 
+// Transformamos segundos a mm:ss para que la vista sea mas amigable.
 function secondsToMinutes(seconds) {
   const safeSeconds = Number(seconds) || 0;
   const minutes = Math.floor(safeSeconds / 60);
@@ -35,6 +38,7 @@ function secondsToMinutes(seconds) {
   return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
 }
 
+// Normalizar payloads evita repetir la misma limpieza de datos en varias acciones.
 function normalizeArtistaPayload(body = {}) {
   return {
     nombre: String(body.nombre || "").trim(),
@@ -52,6 +56,7 @@ function normalizeCancionPayload(body = {}, artistaId) {
   };
 }
 
+// render() se usa cuando queremos construir una pagina HTML en el servidor.
 exports.renderNuevoArtista = (req, res) => {
   return res.render("artista-form", {
     pageTitle: "Nuevo artista",
@@ -67,6 +72,8 @@ exports.renderNuevoArtista = (req, res) => {
   });
 };
 
+// En la parte web, despues de crear solemos usar redirect()
+// para devolver al usuario a otra pagina del flujo.
 exports.crearArtista = async (req, res) => {
   try {
     await Artista.create(normalizeArtistaPayload(req.body));
@@ -84,6 +91,7 @@ exports.crearArtista = async (req, res) => {
   }
 };
 
+// Antes de editar buscamos el registro y llenamos el formulario con sus datos actuales.
 exports.renderEditarArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -112,6 +120,7 @@ exports.renderEditarArtista = async (req, res) => {
   });
 };
 
+// update guarda cambios sobre un registro ya cargado desde la base.
 exports.actualizarArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -138,6 +147,7 @@ exports.actualizarArtista = async (req, res) => {
   }
 };
 
+// Si el artista existe lo eliminamos; si no, simplemente volvemos al inicio.
 exports.eliminarArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -148,6 +158,7 @@ exports.eliminarArtista = async (req, res) => {
   return res.redirect("/?status=artist-deleted");
 };
 
+// Esta vista mezcla datos guardados en la base con datos calculados para mostrar.
 exports.renderDetalleArtista = async (req, res) => {
   const status = String(req.query.status || "").trim();
   const artista = await Artista.findByPk(req.params.id, {
@@ -183,6 +194,8 @@ exports.renderDetalleArtista = async (req, res) => {
   });
 };
 
+// Crear una cancion desde la web sigue este flujo:
+// buscar artista, intentar guardar y redirigir con un estado final.
 exports.crearCancion = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -199,6 +212,7 @@ exports.crearCancion = async (req, res) => {
   return res.redirect(`/artistas/${artista.id}?status=song-created`);
 };
 
+// Primero buscamos la cancion para saber a que artista pertenece.
 exports.eliminarCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
@@ -212,6 +226,8 @@ exports.eliminarCancion = async (req, res) => {
   return res.redirect(`/artistas/${artistaId}?status=song-deleted`);
 };
 
+// increment tambien sirve en la parte web porque la reproduccion
+// es solo un contador numerico.
 exports.reproducirCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
