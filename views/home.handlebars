@@ -9,16 +9,22 @@
 
  <div class="shuffle-card">
   <p class="eyebrow">Shuffle sugerido</p>
-  <div class="shuffle-main">
-    <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
+  {{#if shuffle}}
+    <div class="shuffle-main" data-shuffle-card>
+      <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
 
-    <div class="shuffle-text">
-      <strong>{{shuffle.titulo}}</strong>
-      <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
+      <div class="shuffle-text">
+        <strong data-shuffle-title>{{shuffle.titulo}}</strong>
+        <span data-shuffle-meta>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
+      </div>
+
+      <button class="shuffle-btn" type="button" data-shuffle-button>
+        Shuffle
+      </button>
     </div>
-
-  <a class="shuffle-btn">Shuffle</a>
-  </div>
+  {{else}}
+    <p class="empty-state">No hay canciones disponibles para shuffle.</p>
+  {{/if}}
 </div>
 </section>
 
