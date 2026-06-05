@@ -228,16 +228,24 @@ exports.reproducirCancion = async (req, res) => {
 exports.renderBuscarPorGenero = async (req, res) => {
   try {
     const { genero } = req.params;
-
     const artistasRaw = await Artista.findAll({
       where: { genero: genero.trim() },
       order: [["nombre", "ASC"]]
     });
-
     const artistas = artistasRaw.map(a => a.get({ plain: true }));
 
-    // Renderizamos la vista pasándole los datos
-    res.render("artistas/por_genero", { artistas, genero });
+    const topCanciones = await Cancion.findAll({ order: [["reproducciones", "DESC"]], limit: 10 }).then(res => res.map(c => c.get({ plain: true })));
+    const shuffle = await Cancion.findOne().then(c => c ? c.get({ plain: true }) : null); 
+    const generos = ["Rock", "Pop", "Jazz", "Trap"]; // O tu lógica para traer géneros
+
+    res.render("home", { 
+      artistas, 
+      genero, 
+      filtroGenero: genero, 
+      generos,
+      topCanciones,
+      shuffle
+    });
     
   } catch (error) {
     console.error(error);
