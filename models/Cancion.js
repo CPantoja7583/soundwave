@@ -14,14 +14,6 @@ module.exports = (sequelize) => {
           len: [1, 120]
         }
       },
-      album: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          len: [1, 120]
-        }
-      },
       duracion: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -30,6 +22,14 @@ module.exports = (sequelize) => {
           // min obliga a que la duracion sea mayor que cero.
           isInt: true,
           min: 1
+        }
+      },
+      albumId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "albums",
+          key: "id"
         }
       },
       reproducciones: {

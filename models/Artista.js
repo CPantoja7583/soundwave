@@ -26,6 +26,11 @@ module.exports = (sequelize) => {
           len: [2, 60]
         }
       },
+
+    foto: {
+      type: DataTypes.STRING,
+      allowNull: true
+      },
       pais: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
+
+  {{!-- ── Head ─────────────────────────────────── --}}
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{pageTitle}}</title>
+
+    {{!-- Estilos --}}
     <link rel="stylesheet" href="/styles.css" />
-     <link rel="icon" type="image/x-icon" href="img/soundwave-logo.svg">
+
+    {{!-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="/img/soundwave-logo.svg" />
   </head>
+
   <body>
-<header class="site-header">
-  <div class="shell header-row">
 
-    <a class="brand" href="/">
-      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="#ff2d55">
-        <path d="M21 12h-2c-.894 0 -1.662 -.857 -1.761 -2c-.296 -3.45 -.749 -6 -2.749 -6s-2.5 3.582 -2.5 8s-.5 8 -2.5 8s-2.452 -2.547 -2.749 -6c-.1 -1.147 -.867 -2 -1.763 -2h-2"/>
-      </svg>
-      SoundWave
-    </a>
+    {{!-- ── Header ────────────────────────────────── --}}
+    <header class="site-header">
+      <div class="shell header-row">
 
-    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-    </button>
+        {{!-- Logo y marca --}}
+        <a class="brand" href="/">
+          <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="#ff2d55">
+            <path d="M21 12h-2c-.894 0 -1.662 -.857 -1.761 -2c-.296 -3.45 -.749 -6 -2.749 -6s-2.5 3.582 -2.5 8s-.5 8 -2.5 8s-2.452 -2.547 -2.749 -6c-.1 -1.147 -.867 -2 -1.763 -2h-2"/>
+          </svg>
+          SoundWave
+        </a>
 
-    <nav class="main-nav">
-      <a href="/api/artistas" target="_blank" rel="noreferrer">API artistas</a>
-      <a href="/api/canciones/shuffle" target="_blank" rel="noreferrer">Shuffle JSON</a>
-      <a class="btn btn--primary" href="/artistas/nuevo">+ Nuevo artista</a>
-    </nav>
+        {{!-- Botón hamburguesa (mobile) --}}
+        <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+        </button>
 
-  </div>
-</header>
+        {{!-- Navegación principal --}}
+        <nav class="main-nav">
+          <a href="/api/artistas" target="_blank" rel="noreferrer">API artistas</a>
+          <a href="/api/canciones/shuffle" target="_blank" rel="noreferrer">Shuffle JSON</a>
+          <a class="btn btn--primary" href="/artistas/nuevo">+ Nuevo artista</a>
+        </nav>
 
+      </div>
+    </header>
+
+    {{!-- ── Contenido principal ─────────────────────── --}}
     <main class="shell page-content">
       {{{body}}}
     </main>
 
-<footer class="site-footer">
-  <div class="shell footer-inner">
-    <span class="footer-brand">SoundWave</span>
-    <p class="footer-copy">
-      © 2026 · Camilo Pantoja, Diego Ortúzar, Eduardo Parra y Felipe Torres
-    </p>
-  </div>
-</footer>
+    {{!-- ── Footer ────────────────────────────────── --}}
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <span class="footer-brand">SoundWave</span>
+        <p class="footer-copy">
+          © 2026 · Camilo Pantoja, Diego Ortúzar, Eduardo Parra y Felipe Torres
+        </p>
+      </div>
+    </footer>
 
-       <script src="/js/index.js"></script>
+    {{!-- ── Scripts ────────────────────────────────── --}}
+    <script src="/js/index.js"></script>
+
   </body>
 </html>

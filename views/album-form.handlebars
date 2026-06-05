@@ -1,0 +1,28 @@
+<section class="panel form-panel">
+  <div class="panel-head">
+    <h1 class="form-title">{{formTitle}}</h1>
+  </div>
+
+  <p class="form-intro">{{formIntro}}</p>
+
+  {{#if errorMessage}}
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
+  {{/if}}
+
+  <form class="stack-form" method="POST" action="{{formAction}}" enctype="multipart/form-data">
+    <label>
+      Nombre del álbum
+      <input type="text" name="nombre" value="{{album.nombre}}" autocomplete="off" required />
+    </label>
+
+    <label for="portada">
+      Portada del álbum (opcional)
+      <input type="file" id="portada" name="portada" accept="image/*" />
+    </label>
+
+    <div class="form-actions">
+      <button class="button" type="submit">{{submitLabel}}</button>
+      <a class="button button--ghost" href="/artistas/{{album.artistaId}}">Volver</a>
+    </div>
+  </form>
+</section>

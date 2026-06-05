@@ -250,7 +250,7 @@ router.delete("/artistas/:id", artistaController.eliminarArtista);
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  *   post:
- *     summary: Crear canción para un artista
+ *     summary: Crear cancion para un artista
  *     tags: [Canciones]
  *     parameters:
  *       - in: path
@@ -301,7 +301,7 @@ router.post("/artistas/:id/canciones", cancionController.crearPorArtista);
  * @swagger
  * /api/canciones/{id}:
  *   delete:
- *     summary: Eliminar canción
+ *     summary: Eliminar cancion
  *     tags: [Canciones]
  *     parameters:
  *       - in: path
@@ -337,7 +337,7 @@ router.delete("/canciones/:id", cancionController.eliminarCancion);
  * @swagger
  * /api/canciones/{id}/play:
  *   post:
- *     summary: Registrar reproducción
+ *     summary: Registrar reproduccion
  *     tags: [Canciones]
  *     parameters:
  *       - in: path
@@ -375,7 +375,7 @@ router.post("/canciones/:id/play", cancionController.reproducirCancion);
  * @swagger
  * /api/canciones/shuffle:
  *   get:
- *     summary: Obtener canción aleatoria
+ *     summary: Obtener cancion aleatoria
  *     tags: [Canciones]
  *     responses:
  *       200:

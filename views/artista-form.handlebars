@@ -8,26 +8,30 @@
   {{#if errorMessage}}
     <p class="error-text" aria-live="polite">{{errorMessage}}</p>
   {{/if}}
+<form class="stack-form" method="POST" action="{{formAction}}" enctype="multipart/form-data">
+  <label>
+    Nombre
+    <input type="text" name="nombre" value="{{artist.nombre}}" autocomplete="name" required />
+  </label>
 
-  <form class="stack-form" method="POST" action="{{formAction}}">
-    <label>
-      Nombre
-      <input type="text" name="nombre" value="{{artist.nombre}}" autocomplete="name" required />
-    </label>
+  <label>
+    Genero
+    <input type="text" name="genero" value="{{artist.genero}}" autocomplete="off" required />
+  </label>
 
-    <label>
-      Genero
-      <input type="text" name="genero" value="{{artist.genero}}" autocomplete="off" required />
-    </label>
+  <label>
+    Pais
+    <input type="text" name="pais" value="{{artist.pais}}" autocomplete="country-name" required />
+  </label>
 
-    <label>
-      Pais
-      <input type="text" name="pais" value="{{artist.pais}}" autocomplete="country-name" required />
-    </label>
+  <label for="foto">
+    Foto del artista (opcional)
+    <input type="file" id="foto" name="foto" accept="image/*" />
+  </label>
 
-    <div class="form-actions">
-      <button class="button" type="submit">{{submitLabel}}</button>
-      <a class="button button--ghost" href="/">Volver</a>
-    </div>
-  </form>
+  <div class="form-actions">
+    <button class="button" type="submit">{{submitLabel}}</button>
+    <a class="button button--ghost" href="/">Volver</a>
+  </div>
+</form>
 </section>

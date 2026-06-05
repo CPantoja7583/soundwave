@@ -68,3 +68,17 @@ async function updateShuffleCard() {
 if (shuffleButton) {
   shuffleButton.addEventListener("click", updateShuffleCard);
 }
+
+function toggleNuevoAlbum(value) {
+  const div = document.getElementById("nuevo-album");
+  if (!div) return;
+  div.style.display = value === "nuevo" ? "flex" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("albumId");
+  if (select) {
+    toggleNuevoAlbum(select.value);
+    select.addEventListener("change", (event) => toggleNuevoAlbum(event.target.value));
+  }
+});

@@ -1,0 +1,28 @@
+<section class="panel form-panel">
+  <div class="panel-head">
+    <h1 class="form-title">{{formTitle}}</h1>
+  </div>
+
+  <p class="form-intro">{{formIntro}}</p>
+
+  {{#if errorMessage}}
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
+  {{/if}}
+
+  <form class="stack-form" method="POST" action="{{formAction}}" enctype="multipart/form-data">
+    <label>
+      Titulo
+      <input type="text" name="titulo" value="{{cancion.titulo}}" autocomplete="off" required />
+    </label>
+
+    <label>
+      Duracion (segundos)
+      <input type="number" name="duracion" value="{{cancion.duracion}}" min="1" inputmode="numeric" required />
+    </label>
+
+    <div class="form-actions">
+      <button class="button" type="submit">{{submitLabel}}</button>
+      <a class="button button--ghost" href="/artistas/{{cancion.artistaId}}">Volver</a>
+    </div>
+  </form>
+</section>

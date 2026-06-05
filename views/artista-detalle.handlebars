@@ -39,20 +39,31 @@
         <div class="song-list">
           {{#each artist.canciones}}
             <article class="song-row">
+
+              <div class="song-cover">
+                {{#if album.portada}}
+                  <img src="/uploads/albums/{{album.portada}}" alt="{{album.nombre}}" class="song-cover__img" />
+                {{else}}
+                  <span class="song-cover__empty">🎵</span>
+                {{/if}}
+              </div>
+
               <div>
                 <strong>{{titulo}}</strong>
-                <p class="song-meta">{{album}} &middot; {{duracionTexto}}</p>
+                <p class="song-meta">{{album.nombre}} &middot; {{duracionTexto}}</p>
               </div>
 
               <div class="song-actions">
                 <span class="play-count">{{reproducciones}} reproducciones</span>
                 <form method="POST" action="/canciones/{{id}}/reproducir">
-                <button class="btn-play" type="submit">▶ Reproducir</button>
+                  <button class="btn-play" type="submit">▶ Reproducir</button>
                 </form>
                 <form method="POST" action="/canciones/{{id}}/eliminar" onsubmit="return confirm('Eliminar esta cancion?');">
+                  <a class="button button--ghost" href="/canciones/{{id}}/editar">Editar</a>
                   <button class="btn-danger" type="submit">Eliminar</button>
                 </form>
               </div>
+
             </article>
           {{/each}}
         </div>
@@ -63,22 +74,65 @@
 
     <aside class="panel sidebar">
       <div class="panel-head">
+  <h2>Álbumes</h2>
+</div>
+
+{{#if artist.albums.length}}
+  <ul class="album-list">
+    {{#each artist.albums}}
+      <li class="album-item">
+        {{#if portada}}
+          <img src="/uploads/albums/{{portada}}" alt="{{nombre}}" class="album-thumb" />
+        {{else}}
+          <span class="album-thumb--vacio">🎵</span>
+        {{/if}}
+        <span>{{nombre}}</span>
+        <a class="button button--ghost" href="/albums/{{id}}/editar">Editar</a>
+      </li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p class="empty-state">No hay álbumes aún.</p>
+{{/if}}
+        
         <h2>Agregar cancion</h2>
       </div>
 
-      <form class="stack-form" method="POST" action="/artistas/{{artist.id}}/canciones">
+      <form class="stack-form" method="POST"
+        action="/artistas/{{artist.id}}/canciones"
+        enctype="multipart/form-data">
+
         <label>
           Titulo
           <input type="text" name="titulo" autocomplete="off" required />
         </label>
+
         <label>
           Album
-          <input type="text" name="album" autocomplete="off" required />
+          <select name="albumId" id="albumId" onchange="toggleNuevoAlbum(this.value)">
+            {{#each artist.albums}}
+              <option value="{{id}}">{{nombre}}</option>
+            {{/each}}
+            <option value="nuevo">+ Nuevo álbum</option>
+          </select>
         </label>
+
+        <div id="nuevo-album" style="display:none; gap:14px; flex-direction:column;">
+          <label>
+            Nombre del álbum
+            <input type="text" name="nuevoAlbum" autocomplete="off" />
+          </label>
+          <label>
+            Portada del álbum (opcional)
+            <input type="file" name="portada" accept="image/*" />
+          </label>
+        </div>
+
         <label>
           Duracion (segundos)
           <input type="number" name="duracion" min="1" inputmode="numeric" required />
         </label>
+
         <button class="btn-save" type="submit">Guardar canción</button>
       </form>
 

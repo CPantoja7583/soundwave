@@ -84,9 +84,9 @@ app.use((error, req, res, next) => {
 
 async function startServer() {
   try {
-    // sync() crea las tablas segun los modelos si aun no existen.
-    // Luego seedDatabase agrega datos iniciales solo cuando la base esta vacia.
-    await sequelize.sync();
+    // alter:true ayuda a que este proyecto academico incorpore
+    // nuevos campos y tablas sin migraciones manuales.
+    await sequelize.sync({ alter: true });
     await seedDatabase();
 
     app.listen(PORT, () => {

@@ -1,4 +1,4 @@
-const { Artista, Cancion } = require("../../models");
+const { Artista, Cancion, Album } = require("../../models");
 
 // Sequelize entrega errores bastante detallados.
 // Esta funcion los resume para mostrar mensajes simples y legibles en la API.
@@ -16,7 +16,8 @@ function normalizeArtistaPayload(body = {}) {
   return {
     nombre: String(body.nombre || "").trim(),
     genero: String(body.genero || "").trim(),
-    pais: String(body.pais || "").trim()
+    pais: String(body.pais || "").trim(),
+    foto: body.foto ? String(body.foto).trim() : undefined
   };
 }
 
@@ -41,7 +42,14 @@ exports.listarArtistas = async (req, res) => {
 // 4. responder con el dato si todo va bien
 exports.obtenerArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id, {
-    include: [{ model: Cancion, as: "canciones" }],
+    include: [
+      {
+        model: Cancion,
+        as: "canciones",
+        include: [{ model: Album, as: "album" }]
+      },
+      { model: Album, as: "albums" }
+    ],
     order: [[{ model: Cancion, as: "canciones" }, "titulo", "ASC"]]
   });
 
@@ -94,7 +102,12 @@ exports.actualizarArtista = async (req, res) => {
   }
 
   try {
-    await artista.update(normalizeArtistaPayload(req.body));
+    const payload = normalizeArtistaPayload(req.body);
+    if (payload.foto === undefined) {
+      delete payload.foto;
+    }
+
+    await artista.update(payload);
 
     return res.status(200).json({
       ok: true,
