@@ -223,3 +223,24 @@ exports.reproducirCancion = async (req, res) => {
 
   return res.redirect(`/artistas/${cancion.artistaId}?status=song-played`);
 };
+
+// render para handlebars
+exports.renderBuscarPorGenero = async (req, res) => {
+  try {
+    const { genero } = req.params;
+
+    const artistasRaw = await Artista.findAll({
+      where: { genero: genero.trim() },
+      order: [["nombre", "ASC"]]
+    });
+
+    const artistas = artistasRaw.map(a => a.get({ plain: true }));
+
+    // Renderizamos la vista pasándole los datos
+    res.render("artistas/por_genero", { artistas, genero });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al cargar los artistas por género");
+  }
+};
