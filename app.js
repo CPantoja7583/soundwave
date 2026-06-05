@@ -7,6 +7,7 @@ const webRoutes = require("./routes/web");
 const apiRoutes = require("./routes/api");
 const { sequelize } = require("./models");
 const { seedDatabase } = require("./scripts/seed");
+const { swaggerUi, swaggerSpec } = require("./config/swagger");
 
 // Creamos la aplicacion principal de Express.
 // Desde aqui configuramos middlewares, rutas y el arranque del servidor.
@@ -41,6 +42,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/health", (req, res) => {
   res.status(200).json({ ok: true, message: "SoundWave arriba y sonando." });
 });
+
+// Swagger vive fuera del frontend Handlebars porque documenta la API REST.
+app.get("/api-docs.json", (req, res) => {
+  res.status(200).json(swaggerSpec);
+});
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Separamos las rutas por responsabilidad:
 // - "/" usa controladores web que renderizan vistas o redirigen
