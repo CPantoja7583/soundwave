@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const { Artista, Cancion, sequelize } = require("../models");
 
+// Datos de ejemplo para que el proyecto no arranque vacio.
+// Sirven para probar la aplicacion sin cargar artistas manualmente.
 const seedData = [
   {
     nombre: "Bomba Estereo",
@@ -22,7 +24,7 @@ const seedData = [
     ]
   },
   {
-    nombre: "Zoé",
+    nombre: "Zoe",
     genero: "Rock",
     pais: "Mexico",
     canciones: [
@@ -32,6 +34,8 @@ const seedData = [
   }
 ];
 
+// La semilla solo corre si la tabla de artistas esta vacia.
+// Asi evitamos duplicar datos cada vez que reiniciamos la aplicacion.
 async function seedDatabase() {
   const artistasCount = await Artista.count();
 
@@ -54,6 +58,7 @@ async function seedDatabase() {
   return true;
 }
 
+// Este bloque permite ejecutar la semilla como script independiente.
 async function runSeed() {
   try {
     await sequelize.sync();

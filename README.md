@@ -124,6 +124,47 @@ npm run seed
 npm run check
 ```
 
+## Swagger y Postman
+
+La API ahora puede probarse de dos formas:
+
+### Swagger UI
+
+Con el servidor levantado, abre:
+
+```text
+http://127.0.0.1:3000/api-docs
+```
+
+Y si necesitas el spec crudo:
+
+```text
+http://127.0.0.1:3000/api-docs.json
+```
+
+Swagger sirve como documentacion viva del backend y permite probar endpoints REST desde el navegador.
+
+### Postman
+
+En la carpeta `postman/` quedan dos archivos listos para importar:
+
+- `SoundWave.postman_collection.json`
+- `SoundWave.local.postman_environment.json`
+
+Orden sugerido para la demo del profe:
+
+1. `GET /api/artistas`
+2. `POST /api/artistas`
+3. `GET /api/artistas/{id}`
+4. `POST /api/artistas/{id}/canciones`
+5. `POST /api/canciones/{id}/play`
+6. `GET /api/canciones/shuffle`
+7. `DELETE /api/canciones/{id}`
+8. `DELETE /api/artistas/{id}`
+
+Swagger ayuda a entender y documentar la API.
+Postman sirve como evidencia practica para la evaluacion.
+
 ## Estructura MVC
 
 - `config/`: conexion a base de datos

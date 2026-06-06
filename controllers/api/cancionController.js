@@ -1,7 +1,8 @@
 const { Sequelize } = require("sequelize");
 const { Artista, Cancion } = require("../../models");
 
-// Normaliza y sanitiza los campos del body para crear una canción
+// Igual que en artistas, primero normalizamos el body
+// para trabajar con datos mas consistentes al crear canciones.
 function normalizeCancionPayload(body = {}, artistaId) {
   return {
     titulo: String(body.titulo || "").trim(),
@@ -11,7 +12,7 @@ function normalizeCancionPayload(body = {}, artistaId) {
   };
 }
 
-// Construye un mensaje de error legible a partir de errores de validación de Sequelize
+// Centralizamos el formato de errores de validacion para no repetir logica.
 function buildValidationMessage(error) {
   if (!error || !error.errors) {
     return "Datos invalidos.";
@@ -20,7 +21,9 @@ function buildValidationMessage(error) {
   return error.errors.map((item) => item.message).join(" ");
 }
 
-// GET /api/artistas/:id/canciones — retorna todas las canciones de un artista
+// GET /api/artistas/:id/canciones
+// Primero buscamos el artista padre para poder responder 404
+// si el id no existe.
 exports.listarPorArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id, {
     include: [{ model: Cancion, as: "canciones" }]
@@ -39,7 +42,8 @@ exports.listarPorArtista = async (req, res) => {
   });
 };
 
-// POST /api/artistas/:id/canciones — crea una nueva canción asociada a un artista
+// POST /api/artistas/:id/canciones
+// Antes de crear una cancion validamos que el artista exista.
 exports.crearPorArtista = async (req, res) => {
   const artista = await Artista.findByPk(req.params.id);
 
@@ -66,7 +70,8 @@ exports.crearPorArtista = async (req, res) => {
   }
 };
 
-// DELETE /api/canciones/:id — elimina una canción por su id
+// DELETE /api/canciones/:id
+// destroy elimina una cancion segun su id.
 exports.eliminarCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
@@ -85,7 +90,9 @@ exports.eliminarCancion = async (req, res) => {
   });
 };
 
-// POST /api/canciones/:id/reproducir — incrementa en 1 el contador de reproducciones
+// POST /api/canciones/:id/play
+// increment suma 1 directamente en la base de datos.
+// reload vuelve a leer el registro para devolver el valor actualizado.
 exports.reproducirCancion = async (req, res) => {
   const cancion = await Cancion.findByPk(req.params.id);
 
@@ -106,7 +113,8 @@ exports.reproducirCancion = async (req, res) => {
   });
 };
 
-// GET /api/canciones/shuffle — retorna una canción aleatoria con su artista
+// GET /api/canciones/shuffle
+// RANDOM() le pide a PostgreSQL una cancion aleatoria.
 exports.obtenerShuffle = async (req, res) => {
   const cancion = await Cancion.findOne({
     include: [{ model: Artista, as: "artista" }],

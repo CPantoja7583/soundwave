@@ -4,9 +4,15 @@ const artistaViewController = require("../controllers/web/artistaViewController"
 
 const router = express.Router();
 
+// Estas rutas son las que usa el navegador al navegar por la interfaz.
+// En vez de JSON, aqui solemos renderizar vistas o hacer redirects.
 router.get("/", homeController.renderHome);
 router.get("/artistas/genero/:genero", artistaViewController.renderBuscarPorGenero);
 
+// Reutilizamos la home con filtro por genero en vez de crear una vista aparte.
+router.get("/artistas/genero/:genero", (req, res) => {
+  return res.redirect(`/?genero=${encodeURIComponent(req.params.genero)}`);
+});
 
 router.get("/artistas/nuevo", artistaViewController.renderNuevoArtista);
 router.post("/artistas", artistaViewController.crearArtista);
