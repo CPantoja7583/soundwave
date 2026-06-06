@@ -39,7 +39,8 @@
     <h2>Filtrar por genero</h2>
   </div>
 
-  <form class="filter-form" onsubmit="event.preventDefault(); const gen = document.getElementById('genero-filter').value; window.location.href = gen ? '/artistas/genero/' + gen : '/';">    <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
+  <form class="filter-form" method="GET" action="/">
+    <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
       <option value="">Todos los generos</option>
       {{#each generos}}
         <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
@@ -91,3 +92,4 @@
     {{/if}}
   </aside>
 </section>
+
