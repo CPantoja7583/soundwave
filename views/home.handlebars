@@ -7,14 +7,23 @@
     </p>
   </div>
 
-  <div class="hero-actions">
-    <a class="button" href="/artistas/nuevo">Agregar artista</a>
+  <div class="shuffle-card">
+    <p class="eyebrow">Shuffle sugerido</p>
     {{#if shuffle}}
-      <div class="shuffle-card">
-        <p class="eyebrow">Shuffle sugerido</p>
-        <strong>{{shuffle.titulo}}</strong>
-        <span>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
+      <div class="shuffle-main" data-shuffle-card>
+        <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
+
+        <div class="shuffle-text">
+          <strong data-shuffle-title>{{shuffle.titulo}}</strong>
+          <span data-shuffle-meta>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
+        </div>
+
+        <button class="shuffle-btn" type="button" data-shuffle-button>
+          Shuffle
+        </button>
       </div>
+    {{else}}
+      <p class="empty-state">No hay canciones disponibles para shuffle.</p>
     {{/if}}
   </div>
 </section>
@@ -31,15 +40,14 @@
   </div>
 
   <form class="filter-form" method="GET" action="/">
-    <label class="filter-label" for="genero-filter">Genero</label>
     <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
       <option value="">Todos los generos</option>
       {{#each generos}}
         <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
       {{/each}}
     </select>
-    <button class="button" type="submit">Aplicar</button>
-    <a class="button button--ghost" href="/">Limpiar</a>
+    <button class="btn-filter-apply" type="submit">Aplicar</button>
+    <a class="btn-filter-clear" href="/">Limpiar</a>
   </form>
 </section>
 
@@ -70,11 +78,12 @@
       <ol class="top-list">
         {{#each topCanciones}}
           <li>
-            <div>
+            <span class="top-num"></span>
+            <div class="top-info">
               <strong>{{titulo}}</strong>
               <span>{{artista.nombre}} &middot; {{duracionTexto}}</span>
             </div>
-            <span>{{reproducciones}} reproducciones</span>
+            <span class="top-plays">{{reproducciones}}</span>
           </li>
         {{/each}}
       </ol>
@@ -83,3 +92,4 @@
     {{/if}}
   </aside>
 </section>
+

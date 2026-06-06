@@ -1,6 +1,8 @@
 node_modules/
 .env
-data/*.sqlite
-data/*.sqlite-journal
+data/
 server.out.log
 server.err.log
+server-3008.out.log
+server-3010.out.log
+server-3011.out.log
