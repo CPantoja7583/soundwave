@@ -1,0 +1,135 @@
+{
+  "info": {
+    "_postman_id": "b6ee8a4f-9734-4aa1-9d1d-a12b0dbd4964",
+    "name": "SoundWave API",
+    "description": "Coleccion Postman para probar la API REST de SoundWave.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Artistas",
+      "item": [
+        {
+          "name": "Listar artistas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artistas"
+          }
+        },
+        {
+          "name": "Obtener artista por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artistas/{{artistaId}}"
+          }
+        },
+        {
+          "name": "Crear artista",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Los Bunkers\",\n  \"genero\": \"Rock\",\n  \"pais\": \"Chile\"\n}"
+            },
+            "url": "{{baseUrl}}/api/artistas"
+          }
+        },
+        {
+          "name": "Actualizar artista",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Los Bunkers Actualizado\",\n  \"genero\": \"Rock Alternativo\",\n  \"pais\": \"Chile\"\n}"
+            },
+            "url": "{{baseUrl}}/api/artistas/{{artistaId}}"
+          }
+        },
+        {
+          "name": "Eliminar artista",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/artistas/{{artistaId}}"
+          }
+        },
+        {
+          "name": "Buscar artistas por genero",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/genero/Alternativo"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Canciones",
+      "item": [
+        {
+          "name": "Listar canciones por artista",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/artistas/{{artistaId}}/canciones"
+          }
+        },
+        {
+          "name": "Crear cancion para artista",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Cancion demo\",\n  \"album\": \"Album demo\",\n  \"duracion\": 210\n}"
+            },
+            "url": "{{baseUrl}}/api/artistas/{{artistaId}}/canciones"
+          }
+        },
+        {
+          "name": "Eliminar cancion",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/canciones/{{cancionId}}"
+          }
+        },
+        {
+          "name": "Registrar reproduccion",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/canciones/{{cancionId}}/play"
+          }
+        },
+        {
+          "name": "Shuffle",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/canciones/shuffle"
+          }
+        }
+      ]
+    }
+  ]
+}

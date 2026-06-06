@@ -1,14 +1,26 @@
 <article class="artist-card">
   <div class="artist-card__body">
     <p class="eyebrow">{{genero}}</p>
-    <h3>{{nombre}}</h3>
-    <p>{{pais}}</p>
+
+    <h3 class="artist-name">{{nombre}}</h3>
+    <p class="artist-country">{{pais}}</p>
+    <div class="artist-card__cover">
+    {{#if foto}}
+      <img src="/uploads/artistas/{{foto}}" alt="{{nombre}}" class="artist-card__img" />
+    {{else}}
+      <span class="artist-card__img--vacia">🎤</span>
+    {{/if}}
+     </div>
+
     <dl class="artist-stats">
-      <div>
+      <div class="stat">
+        <img src="/img/music-logo.svg" alt="icono musica" class="stat-icon">
         <dt>Canciones</dt>
         <dd>{{totalCanciones}}</dd>
       </div>
-      <div>
+
+      <div class="stat">
+        <img src="/img/time-logo.svg" alt="icono musica" class="stat-icon">
         <dt>Duracion total</dt>
         <dd>{{duracionTotal}}</dd>
       </div>
