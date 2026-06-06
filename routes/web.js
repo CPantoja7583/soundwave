@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/", homeController.renderHome);
 router.get("/artistas/genero/:genero", artistaViewController.renderBuscarPorGenero);
 
+
 router.get("/artistas/nuevo", artistaViewController.renderNuevoArtista);
 router.post("/artistas", artistaViewController.crearArtista);
 router.get("/artistas/:id", artistaViewController.renderDetalleArtista);
