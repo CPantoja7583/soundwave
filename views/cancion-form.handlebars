@@ -20,6 +20,11 @@
       <input type="number" name="duracion" value="{{cancion.duracion}}" min="1" inputmode="numeric" required />
     </label>
 
+    <label>
+      Link de YouTube
+      <input type="url" name="youtube_url" value="{{cancion.youtube_url}}" placeholder="https://www.youtube.com/watch?v=..." />
+    </label>
+
     <div class="form-actions">
       <button class="button" type="submit">{{submitLabel}}</button>
       <a class="button button--ghost" href="/artistas/{{cancion.artistaId}}">Volver</a>

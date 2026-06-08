@@ -1,11 +1,11 @@
 const { DataTypes } = require("sequelize");
 
+// Define y exporta el modelo Cancion
 module.exports = (sequelize) => {
-  // Este modelo representa canciones.
-  // Cada propiedad que definimos abajo terminara siendo una columna en la tabla.
   return sequelize.define(
     "Cancion",
     {
+      // Título de la canción, obligatorio y con un máximo de 120 caracteres
       titulo: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -14,16 +14,16 @@ module.exports = (sequelize) => {
           len: [1, 120]
         }
       },
+      // Duración en segundos, obligatoria y con valor mínimo de 1
       duracion: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          // isInt exige un numero entero.
-          // min obliga a que la duracion sea mayor que cero.
           isInt: true,
           min: 1
         }
       },
+      // Clave foránea al álbum al que pertenece la canción, opcional
       albumId: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -32,18 +32,27 @@ module.exports = (sequelize) => {
           key: "id"
         }
       },
+      // Contador de reproducciones, por defecto en 0 y sin admitir valores negativos
       reproducciones: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        // defaultValue es el valor inicial si no enviamos uno manualmente.
         defaultValue: 0,
         validate: {
           isInt: true,
           min: 0
         }
+      },
+      // URL de YouTube asociada a la canción, opcional y validada como URL
+      youtube_url: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        validate: {
+          isUrl: true
+        }
       }
     },
     {
+      // Nombre real de la tabla en PostgreSQL
       tableName: "canciones"
     }
   );

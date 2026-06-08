@@ -1,3 +1,10 @@
+{{#if feedback}}
+  <section class="notice notice--{{feedback.tone}}" aria-live="polite">
+    <p>{{feedback.message}}</p>
+  </section>
+{{/if}}
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
 <section class="hero">
   <div>
     <p class="eyebrow">Proyecto grupal</p>
@@ -12,15 +19,18 @@
     {{#if shuffle}}
       <div class="shuffle-main" data-shuffle-card>
         <img src="/img/shuffle-logo.svg" alt="Shuffle" class="shuffle-icon">
-
         <div class="shuffle-text">
           <strong data-shuffle-title>{{shuffle.titulo}}</strong>
           <span data-shuffle-meta>{{shuffle.artista.nombre}} &middot; {{shuffle.duracionTexto}}</span>
         </div>
-
-        <button class="shuffle-btn" type="button" data-shuffle-button>
-          Shuffle
-        </button>
+        <div class="shuffle-actions">
+          <form id="shuffle-play-form" method="POST" action="/canciones/{{shuffle.id}}/reproducir">
+            <button class="shuffle-btn" type="submit">▶ Reproducir</button>
+          </form>
+          <button class="shuffle-btn shuffle-btn--ghost" type="button" data-shuffle-button>
+            ↺ Otro
+          </button>
+        </div>
       </div>
     {{else}}
       <p class="empty-state">No hay canciones disponibles para shuffle.</p>
@@ -28,20 +38,46 @@
   </div>
 </section>
 
-{{#if feedback}}
-  <section class="notice notice--{{feedback.tone}}" aria-live="polite">
-    <p>{{feedback.message}}</p>
+<!-- ══ CARRUSEL TOP 10 ═══════════════════════════════ -->
+{{#if topCanciones.length}}
+  <section class="panel carousel-section">
+    <div class="panel-head">
+      <h2>🔥 Top 10</h2>
+      <span class="count-pill">Más reproducidas</span>
+    </div>
+
+    <div class="carousel-wrapper">
+      <button class="carousel-arrow carousel-arrow--prev" aria-label="Anterior">&#8592;</button>
+
+      <div class="carousel-track" id="carousel-track">
+        {{#each topCanciones}}
+          <a class="carousel-item" href="/canciones/{{id}}">
+            <div class="carousel-badge">{{posicion}}</div>
+            {{#if album.portada}}
+              <img src="/uploads/albums/{{album.portada}}" alt="{{album.nombre}}" class="carousel-img" />
+            {{else}}
+              <div class="carousel-img carousel-img--empty">🎵</div>
+            {{/if}}
+            <p class="carousel-title">{{titulo}}</p>
+            <p class="carousel-artist">{{artista.nombre}}</p>
+            <p class="carousel-plays">{{reproducciones}} rep.</p>
+          </a>
+        {{/each}}
+      </div>
+
+      <button class="carousel-arrow carousel-arrow--next" aria-label="Siguiente">&#8594;</button>
+    </div>
   </section>
 {{/if}}
 
+<!-- ══ FILTRO ════════════════════════════════════════ -->
 <section class="panel">
   <div class="panel-head">
-    <h2>Filtrar por genero</h2>
+    <h2>Filtrar por género</h2>
   </div>
-
   <form class="filter-form" method="GET" action="/">
     <select id="genero-filter" name="genero" aria-label="Filtrar artistas por genero">
-      <option value="">Todos los generos</option>
+      <option value="">Todos los géneros</option>
       {{#each generos}}
         <option value="{{this}}" {{#if (eq ../filtroGenero this)}}selected{{/if}}>{{this}}</option>
       {{/each}}
@@ -51,45 +87,20 @@
   </form>
 </section>
 
-<section class="grid-layout">
-  <div class="panel">
-    <div class="panel-head">
-      <h2>Artistas</h2>
-      <span class="count-pill">{{artistas.length}} encontrados</span>
-    </div>
-
-    {{#if artistas.length}}
-      <div class="artist-grid">
-        {{#each artistas}}
-          {{> artista-card}}
-        {{/each}}
-      </div>
-    {{else}}
-      <p class="empty-state">No hay artistas para este filtro todavia.</p>
-    {{/if}}
+<!-- ══ ARTISTAS ══════════════════════════════════════ -->
+<section class="panel">
+  <div class="panel-head">
+    <h2>Artistas</h2>
+    <span class="count-pill">{{artistas.length}} encontrados</span>
   </div>
 
-  <aside class="panel sidebar">
-    <div class="panel-head">
-      <h2>Top 10</h2>
+  {{#if artistas.length}}
+    <div class="artist-grid">
+      {{#each artistas}}
+        {{> artista-card}}
+      {{/each}}
     </div>
-
-    {{#if topCanciones.length}}
-      <ol class="top-list">
-        {{#each topCanciones}}
-          <li>
-            <span class="top-num"></span>
-            <div class="top-info">
-              <strong>{{titulo}}</strong>
-              <span>{{artista.nombre}} &middot; {{duracionTexto}}</span>
-            </div>
-            <span class="top-plays">{{reproducciones}}</span>
-          </li>
-        {{/each}}
-      </ol>
-    {{else}}
-      <p class="empty-state">Aun no hay canciones en ranking.</p>
-    {{/if}}
-  </aside>
+  {{else}}
+    <p class="empty-state">No hay artistas para este filtro todavia.</p>
+  {{/if}}
 </section>
-
