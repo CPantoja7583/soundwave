@@ -1,34 +1,46 @@
+{{!-- Tarjeta de artista --}}
 <article class="artist-card">
-  <div class="artist-card__body">
-    <p class="eyebrow">{{genero}}</p>
 
-    <h3 class="artist-name">{{nombre}}</h3>
-    <p class="artist-country">{{pais}}</p>
-    <div class="artist-card__cover">
+  {{!-- Hero: imagen, overlay, género y acciones --}}
+  <div class="artist-card__hero">
+
+    {{!-- Muestra la foto del artista o un ícono por defecto si no tiene --}}
     {{#if foto}}
       <img src="/uploads/artistas/{{foto}}" alt="{{nombre}}" class="artist-card__img" />
     {{else}}
       <span class="artist-card__img--vacia">🎤</span>
     {{/if}}
-     </div>
 
+    <div class="artist-card__hero-overlay"></div>
+    <span class="artist-card__genre-pill">{{genero}}</span>
+
+    {{!-- Botones de navegación que aparecen sobre el hero --}}
+    <div class="artist-card__actions">
+      <a class="artist-card__action-btn" href="/artistas/{{id}}">Ver detalle</a>
+      <a class="artist-card__action-btn" href="/artistas/{{id}}/editar">Editar</a>
+    </div>
+
+  </div>
+
+  {{!-- Cuerpo: nombre, país y estadísticas --}}
+  <div class="artist-card__body">
+    <h3 class="artist-name">{{nombre}}</h3>
+    <p class="artist-country">{{pais}}</p>
+
+    {{!-- Estadísticas: total de canciones y duración acumulada --}}
     <dl class="artist-stats">
       <div class="stat">
         <img src="/img/music-logo.svg" alt="icono musica" class="stat-icon">
         <dt>Canciones</dt>
         <dd>{{totalCanciones}}</dd>
       </div>
-
       <div class="stat">
-        <img src="/img/time-logo.svg" alt="icono musica" class="stat-icon">
+        <img src="/img/time-logo.svg" alt="icono tiempo" class="stat-icon">
         <dt>Duracion total</dt>
         <dd>{{duracionTotal}}</dd>
       </div>
     </dl>
+
   </div>
 
-  <div class="artist-card__actions">
-    <a class="button" href="/artistas/{{id}}">Ver detalle</a>
-    <a class="button button--ghost" href="/artistas/{{id}}/editar">Editar</a>
-  </div>
 </article>
