@@ -21,8 +21,19 @@
     </label>
 
     <div class="form-actions">
-      <button class="button" type="submit">{{submitLabel}}</button>
-      <a class="button button--ghost" href="/artistas/{{album.artistaId}}">Volver</a>
+      <button class="btn-save" type="submit">{{submitLabel}}</button>
+      <a class="btn-play" href="/artistas/{{album.artistaId}}">Volver</a>
     </div>
   </form>
+
+  <div class="danger-zone">
+    <div class="panel-head">
+      <h2>Zona de peligro</h2>
+    </div>
+    <p class="danger-copy">Esta acción borra el álbum permanentemente.</p>
+    <form method="POST" action="/albums/{{album.id}}/eliminar"
+      onsubmit="return confirm('Eliminar este álbum?');">
+      <button class="btn-danger" type="submit">Eliminar álbum</button>
+    </form>
+  </div>
 </section>

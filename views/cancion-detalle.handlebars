@@ -1,0 +1,120 @@
+{{#if errorMessage}}
+  <section class="panel">
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
+  </section>
+{{else}}
+
+  {{#if feedback}}
+    <section class="notice notice--{{feedback.tone}}" aria-live="polite">
+      <p>{{feedback.message}}</p>
+    </section>
+  {{/if}}
+
+  <!-- HERO -->
+  <section class="detail-hero panel">
+    <div>
+      <p class="eyebrow">{{cancion.artista.genero}}</p>
+      <h1 class="detail-title">{{cancion.titulo}}</h1>
+      <p>{{cancion.artista.nombre}} &middot; {{cancion.album.nombre}}</p>
+    </div>
+
+    <div class="detail-stats">
+      <div>
+        <span>Duración</span>
+        <strong>{{cancion.duracionTexto}}</strong>
+      </div>
+      <div>
+        <span>Reproducciones</span>
+        <strong>{{cancion.reproducciones}}</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="grid-layout">
+
+    <!-- COLUMNA IZQUIERDA: video + acciones -->
+    <div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Video</h2>
+          <a class="btn-play" href="/artistas/{{cancion.artistaId}}">← Volver</a>
+        </div>
+
+        {{#if cancion.youtube_url}}
+          <div class="video-wrapper">
+            <iframe
+              src="{{cancion.youtubeEmbed}}"
+              title="{{cancion.titulo}}"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        {{else}}
+          <p class="empty-state">Esta canción no tiene video asociado.</p>
+        {{/if}}
+      </div>
+
+      <!-- Acciones -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Acciones</h2>
+        </div>
+        <div class="song-actions">
+          <form method="POST" action="/canciones/{{cancion.id}}/reproducir">
+            <button class="btn-play" type="submit">▶ Registrar reproducción</button>
+          </form>
+          <a class="btn-save" href="/canciones/{{cancion.id}}/editar">Editar canción</a>
+          <form method="POST" action="/canciones/{{cancion.id}}/eliminar"
+            onsubmit="return confirm('Eliminar esta canción?');">
+            <button class="btn-danger" type="submit">Eliminar</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA: otras canciones -->
+    <aside class="panel sidebar">
+      <div class="panel-head">
+        <h2>Más canciones</h2>
+        <span class="count-pill">{{otrasCanciones.length}}</span>
+      </div>
+
+      {{#if otrasCanciones.length}}
+        <div class="song-list">
+          {{#each otrasCanciones}}
+            <article class="song-row">
+
+              <div class="song-cover">
+                {{#if album.portada}}
+                  <img src="/uploads/albums/{{album.portada}}"
+                    alt="{{album.nombre}}"
+                    class="song-cover__img" />
+                {{else}}
+                  <span class="song-cover__empty">🎵</span>
+                {{/if}}
+              </div>
+
+              <div>
+                <strong>{{titulo}}</strong>
+                <p class="song-meta">{{album.nombre}} &middot; {{duracionTexto}}</p>
+              </div>
+
+              <div class="song-actions">
+                <a class="btn-play" href="/canciones/{{id}}">▶</a>
+              </div>
+
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty-state">No hay más canciones de este artista.</p>
+      {{/if}}
+    </aside>
+
+  </section>
+
+{{/if}}

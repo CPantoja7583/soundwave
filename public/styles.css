@@ -1,28 +1,43 @@
 /* ════════════════════════════════════════════
-   VARIABLES
+   VARIABLES GLOBALES
+   Colores, superficies y utilidades reutilizables.
+   Cambiar un valor aquí afecta toda la app.
 ════════════════════════════════════════════ */
 :root {
+  /* Fondos */
   --bg:              #1A1A2E;
   --surface:         #0F0F1A;
   --surface-2:       #13132280;
+  --surface-overlay: #07070c75;
+
+  /* Tipografía */
   --text:            #ffffff;
   --muted:           #ffffff66;
+
+  /* Acento principal (rojo/rosa) */
   --accent:          #E94560;
   --accent-dark:     #c73550;
+  --accent-subtle:   #E9456022;
+  --accent-border:   #E9456055;
+
+  /* Peligro */
   --danger:          #a82844;
+
+  /* Bordes y utilidades */
   --border:          #ffffff15;
   --icon-accent:     #a855f7;
-  --surface-overlay: #07070c75;
+  --highlight:       #F5A623;
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    RESET Y BASE
+   Normaliza comportamientos entre navegadores.
 ════════════════════════════════════════════ */
 *, *::before, *::after {
   box-sizing: border-box;
 }
- 
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -30,18 +45,18 @@ body {
   color: var(--text);
   -webkit-text-size-adjust: 100%;
 }
- 
+
 a {
   color: inherit;
   text-decoration: none;
 }
- 
+
 a:hover,
 .main-nav a:hover,
 .utility-row a:hover {
-  color: #F5A623;
+  color: var(--highlight);
 }
- 
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -49,30 +64,32 @@ select:focus-visible {
   outline: 3px solid rgba(233, 69, 96, 0.3);
   outline-offset: 2px;
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    LAYOUT
+   Contenedor principal y grillas de página.
 ════════════════════════════════════════════ */
 .shell {
   max-width: 1320px;
   margin: 0 auto;
   padding: 0 16px;
 }
- 
+
 .page-content {
   padding: 28px 0 44px;
 }
- 
+
 .grid-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    HEADER Y NAVBAR
+   Barra superior fija con blur y menú burger.
 ════════════════════════════════════════════ */
 .site-header {
   position: sticky;
@@ -82,32 +99,31 @@ select:focus-visible {
   background: #0F0F1Acc;
   backdrop-filter: blur(8px);
 }
- 
+
 .header-row {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 12px 0;
 }
- 
+
 .logo {
   width: 40px;
   height: 40px;
 }
- 
+
 .brand {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-decoration: none;
   font-weight: 900;
   font-size: 1.9rem;
   margin-left: 30px;
-  color: #fff;
+  color: var(--text);
+  text-decoration: none;
 }
- 
-/* Burger */
+
+/* Botón burger mobile */
 .nav-toggle {
   display: flex;
   flex-direction: column;
@@ -120,16 +136,17 @@ select:focus-visible {
   cursor: pointer;
   padding: 4px;
 }
- 
+
 .burger-bar {
   display: block;
   width: 22px;
   height: 2px;
-  background: #ffffff;
+  background: var(--text);
   border-radius: 2px;
   transition: transform 160ms ease, opacity 160ms ease;
 }
- 
+
+/* Animación X al abrir */
 .nav-toggle[aria-expanded="true"] .burger-bar:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
@@ -139,8 +156,8 @@ select:focus-visible {
 .nav-toggle[aria-expanded="true"] .burger-bar:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
- 
-/* Nav mobile */
+
+/* Menú mobile — oculto por defecto */
 .main-nav {
   display: none;
   flex-direction: column;
@@ -151,17 +168,16 @@ select:focus-visible {
   left: 16px;
   right: 16px;
   background: var(--surface);
-  border: 1px solid #ffffff15;
+  border: 1px solid var(--border);
   border-radius: 8px;
   backdrop-filter: blur(8px);
   z-index: 100;
 }
- 
+
 .main-nav.active {
   display: flex;
 }
- 
-/* Utility row */
+
 .utility-row {
   display: flex;
   flex-wrap: wrap;
@@ -170,147 +186,175 @@ select:focus-visible {
   color: var(--muted);
   font-size: 0.82rem;
 }
- 
+
 .utility-label {
   font-weight: 700;
   color: var(--text);
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    HERO Y SHUFFLE
+   Sección principal del home con título y shuffle.
 ════════════════════════════════════════════ */
 .hero,
-.detail-hero,
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
 }
- 
-.hero,
-.detail-hero {
+
+.hero {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
   padding: 28px;
   margin-bottom: 24px;
 }
- 
+
+/* Texto decorativo sobre títulos */
 .eyebrow {
   margin: 0 0 8px;
-  color: #F5A623;
+  color: var(--highlight);
   text-transform: uppercase;
   font-size: 1rem;
   letter-spacing: 0.04em;
 }
- 
+
 .hero h1,
-.detail-hero h1,
 .form-panel h1 {
   margin: 0 0 12px;
   color: var(--text);
 }
- 
-.hero-title {
-  font-size: 1.8rem;
-  max-width: 30ch;
-}
- 
-.detail-title {
-  font-size: 1.5rem;
-}
- 
-.form-title {
-  font-size: 1.25rem;
-}
- 
+
+.hero-title   { font-size: 1.8rem; max-width: 30ch; }
+.detail-title { font-size: 1.5rem; }
+.form-title   { font-size: 1.25rem; }
+
 .lede {
   margin: 0;
   max-width: 58ch;
   color: var(--muted);
   line-height: 1.3rem;
 }
- 
+
 .hero-actions {
   display: flex;
   flex-direction: column;
   gap: 16px;
   align-items: flex-start;
 }
- 
-/* Shuffle card */
+
+/* Tarjeta del shuffle sugerido */
 .shuffle-card {
   width: 100%;
   padding: 20px;
   border-radius: 20px;
-  background: #E9456012;
-  border: 0.5px solid #E9456044;
+  background: var(--accent-subtle);
+  border: 0.5px solid var(--accent-border);
+  min-width: 0;
+  overflow: hidden;
 }
- 
+
+/* Mobile: apilado vertical */
 .shuffle-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shuffle-top {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
- 
+
 .shuffle-icon {
   width: 42px;
   height: 42px;
   flex-shrink: 0;
-  background: #E9456022;
-  border: 0.5px solid #E9456055;
+  background: var(--accent-subtle);
+  border: 0.5px solid var(--accent-border);
   border-radius: 8px;
   padding: 8px;
 }
- 
+
 .shuffle-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
- 
+
+/* Trunca título y artista si son muy largos */
+.shuffle-text strong,
+.shuffle-text span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .shuffle-text strong {
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text);
 }
- 
+
 .shuffle-text span {
   font-size: 0.82rem;
   color: var(--muted);
 }
- 
+
+.shuffle-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .shuffle-btn {
-  margin-left: auto;
+  flex: 1;
   background: transparent;
   border: 1px solid #ffffff30;
   border-radius: 8px;
-  padding: 15px 20px;
-  font-size: 1rem;
+  padding: 10px 16px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  color: var(--text);
+  text-align: center;
   text-decoration: none;
-  color: white;
-  flex-shrink: 0;
+  transition: background 160ms ease, border-color 160ms ease;
 }
- 
+
 .shuffle-btn:hover {
-  background: #ffffff0e;
-  border-color: #ffffff50;
+  background: var(--accent-subtle);
+  border-color: var(--accent-border);
 }
- 
- 
+
+.shuffle-btn--ghost {
+  border-color: #ffffff20;
+  color: var(--muted);
+}
+
+.shuffle-btn--ghost:hover {
+  background: #ffffff0e;
+  color: var(--text);
+}
+
+
 /* ════════════════════════════════════════════
    PANELS Y NOTICES
+   Contenedores de secciones y mensajes de estado.
 ════════════════════════════════════════════ */
 .panel {
   padding: 22px;
   margin-bottom: 24px;
   overflow: hidden;
 }
- 
+
 .panel-head {
   display: flex;
   justify-content: space-between;
@@ -318,23 +362,25 @@ select:focus-visible {
   gap: 12px;
   margin-bottom: 16px;
 }
- 
-.panel-head h2,
-.panel-head h1 {
+
+.panel-head h1,
+.panel-head h2 {
   margin: 0;
-  color: #ffffff;
+  color: var(--text);
 }
- 
+
+/* Pill de conteo (ej: "4 encontrados") */
 .count-pill {
   padding: 6px 10px;
   border-radius: 999px;
-  background: #E9456018;
-  color: #E94560;
+  background: var(--accent-subtle);
+  color: var(--accent);
   font-size: 0.86rem;
   font-weight: 700;
-  border: 0.5px solid #E9456044;
+  border: 0.5px solid var(--accent-border);
 }
- 
+
+/* Notificaciones de éxito y error */
 .notice {
   margin-bottom: 24px;
   padding: 14px 18px;
@@ -342,192 +388,481 @@ select:focus-visible {
   border: 1px solid var(--border);
   font-weight: 600;
 }
- 
-.notice p {
-  margin: 0;
-}
- 
+
+.notice p { margin: 0; }
+
 .notice--success {
   background: rgba(233, 69, 96, 0.08);
   border-color: rgba(233, 69, 96, 0.25);
-  color: #E94560;
+  color: var(--accent);
 }
- 
+
 .notice--error {
   background: rgba(168, 40, 68, 0.12);
   border-color: rgba(168, 40, 68, 0.3);
   color: #f08090;
 }
- 
-.empty-state {
-  color: var(--muted);
+
+.empty-state { color: var(--muted); }
+.error-text  { color: #f08090; font-weight: 600; }
+.danger-zone { margin-top: 18px; }
+
+
+/* ════════════════════════════════════════════
+   CARRUSEL TOP 10
+   Scroll horizontal con autoplay y drag.
+════════════════════════════════════════════ */
+.carousel-section { overflow: hidden; }
+
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
- 
-.error-text {
-  color: #f08090;
+
+.carousel-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 8px 4px;
+  flex: 1;
+}
+
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-item {
+  flex-shrink: 0;
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: transform 160ms ease;
+}
+
+.carousel-item:hover { transform: translateY(-4px); }
+
+/* Badge de posición (1, 2, 3...) */
+.carousel-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.carousel-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  background: var(--surface-2);
+}
+
+.carousel-img--empty {
+  width: 110px;
+  height: 110px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.carousel-title {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-artist {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-plays {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--accent);
   font-weight: 600;
 }
- 
-.danger-zone {
-  margin-top: 18px;
+
+.carousel-arrow {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 160ms ease, border-color 160ms ease;
 }
- 
- 
+
+.carousel-arrow:hover {
+  background: #ffffff0e;
+  border-color: #ffffff30;
+}
+
+
+/* ════════════════════════════════════════════
+   DETAIL HERO
+   Hero de la página de detalle del artista
+   con imagen de fondo, avatar y stats.
+════════════════════════════════════════════ */
+.detail-hero {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  min-height: 200px;
+  background: var(--surface);
+}
+
+/* Imagen de fondo desenfocada */
+.detail-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.detail-hero__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  opacity: 0.18;
+  filter: blur(2px);
+}
+
+/* Gradiente para legibilidad del texto */
+.detail-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #0F0F1Aee 40%, #0F0F1A88 100%);
+}
+
+/* Botón editar flotante */
+.detail-hero__edit {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffffcc;
+  background: #ffffff10;
+  border: 1px solid #ffffff25;
+  border-radius: 8px;
+  padding: 8px 14px;
+  text-decoration: none;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.detail-hero__edit:hover {
+  background: #ffffff1e;
+  color: var(--text);
+}
+
+.detail-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+}
+
+.detail-hero__left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Avatar cuadrado del artista */
+.detail-hero__avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detail-hero__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-hero__avatar span { font-size: 2.4rem; }
+
+.detail-hero__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.detail-hero__genre {
+  margin: 0 0 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--highlight);
+}
+
+.detail-hero__country {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Stats de canciones y duración */
+.detail-hero__stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-hero__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 22px;
+  background: #ffffff08;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 100px;
+}
+
+.detail-hero__stat span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.detail-hero__stat strong {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+
 /* ════════════════════════════════════════════
    ARTISTAS
+   Grid de cards con imagen hero y stats.
 ════════════════════════════════════════════ */
 .artist-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
 }
- 
+
 .artist-card {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 16px;
-  padding: 18px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--surface-overlay);
+  overflow: hidden;
 }
- 
-.artist-card__cover {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
+
+/* Imagen hero de la card */
+.artist-card__hero {
+  position: relative;
+  width: 100%;
+  height: 200px;
   overflow: hidden;
   background: var(--surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
- 
+
 .artist-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
- 
+
 .artist-card__img--vacia {
-  font-size: 2.5rem;
+  font-size: 4rem;
+  z-index: 1;
 }
- 
-.artist-card__body {
-  display: grid;
-  gap: 5px;
-  min-width: 0;
+
+/* Gradiente inferior para legibilidad */
+.artist-card__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #0F0F1A 0%, #0F0F1A99 35%, transparent 100%);
+  pointer-events: none;
 }
- 
-.artist-card__body h3,
+
+/* Pill del género sobre la imagen */
+.artist-card__genre-pill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #ffffff15;
+  color: #ffffffcc;
+  border: 0.5px solid #ffffff25;
+  z-index: 2;
+}
+
+/* Botones ver/editar sobre la imagen */
 .artist-card__actions {
-  min-width: 0;
-}
- 
-.artist-card__actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
+  z-index: 2;
 }
- 
+
+.artist-card__action-btn {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #ffffffbb;
+  background: #00000055;
+  border: 1px solid #ffffff20;
+  border-radius: 6px;
+  padding: 4px 9px;
+  text-decoration: none;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.artist-card__action-btn:hover {
+  background: #ffffff18;
+  color: var(--text);
+}
+
+/* Info inferior de la card */
+.artist-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 16px;
+}
+
 .artist-name {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text);
   margin: 0 0 4px;
 }
- 
+
 .artist-country {
-  font-size: 1rem;
+  font-size: 0.82rem;
   color: var(--muted);
-  margin: 0;
+  margin: 0 0 12px;
 }
- 
+
 .artist-stats {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
- 
-/* Stats */
+
+/* Stats de canciones y duración total */
 .stat {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
   padding: 10px 12px;
-  background: #1A1A2E;
+  background: var(--bg);
   border: 1px solid #ffffff15;
   border-radius: 8px;
   min-width: 96px;
 }
- 
+
 .stat-icon {
   display: block;
   width: 18px;
   height: 18px;
 }
- 
+
 .stat dt {
   font-size: 0.8rem;
   color: var(--muted);
 }
- 
+
 .stat dd {
   margin: 0;
   font-weight: 700;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text);
 }
- 
-/* Detail stats */
-.detail-stats {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
- 
-.detail-stats span {
-  color: var(--muted);
-}
- 
-.detail-stats strong {
-  font-variant-numeric: tabular-nums;
-  color: #ffffff;
-}
- 
- 
+
+
 /* ════════════════════════════════════════════
    CANCIONES
+   Lista de canciones con portada, info y acciones.
 ════════════════════════════════════════════ */
 .song-list {
   display: grid;
   gap: 14px;
 }
- 
+
 .song-row {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 12px;
-  padding: 18px;
+  padding: 16px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
-  /* Fix desbordamiento mobile */
   min-width: 0;
   overflow: hidden;
 }
- 
-.song-row p {
-  margin: 0;
-  color: #ffffffbb;
-}
- 
-/* Cover de canción */
+
+/* Portada del álbum de la canción */
 .song-cover {
   width: 52px;
   height: 52px;
@@ -539,70 +874,78 @@ select:focus-visible {
   justify-content: center;
   flex-shrink: 0;
 }
- 
+
 .song-cover__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
- 
-.song-cover__empty {
-  font-size: 1.4rem;
-}
- 
-/* Metadatos y conteo */
-.song-meta {
-  font-size: 0.94rem;
-  color: var(--muted);
-  /* Fix desbordamiento en textos largos */
+
+.song-cover__empty { font-size: 1.4rem; }
+
+/* Info de la canción */
+.song-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   min-width: 0;
+}
+
+.song-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.song-meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
- 
+
 .play-count {
+  font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
-  color: #ffffff;
+  color: var(--muted);
 }
- 
-/* Acciones de canción */
+
+/* Acciones: reproducir, editar, eliminar */
 .song-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
- 
-.btn-play-count {
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-  color: #F5A623;
-  font-weight: 600;
-  flex-shrink: 0;
-}
- 
-.btn-play {
-  background: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff25;
+
+/* Reproductor de YouTube embebido */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease;
 }
- 
-.btn-play:hover {
-  background: #ffffff0e;
-  border-color: #ffffff45;
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    ÁLBUMES
+   Lista de álbumes con portada y acciones.
 ════════════════════════════════════════════ */
 .album-list {
   list-style: none;
@@ -611,14 +954,14 @@ select:focus-visible {
   flex-direction: column;
   gap: 8px;
 }
- 
+
 .album-item {
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
 }
- 
+
 .album-thumb {
   width: 48px;
   height: 48px;
@@ -626,7 +969,7 @@ select:focus-visible {
   border-radius: 4px;
   flex-shrink: 0;
 }
- 
+
 .album-thumb--vacio {
   width: 48px;
   height: 48px;
@@ -635,79 +978,11 @@ select:focus-visible {
   justify-content: center;
   flex-shrink: 0;
 }
- 
- 
-/* ════════════════════════════════════════════
-   TOP 10
-════════════════════════════════════════════ */
-.top-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  counter-reset: ranking;
-}
- 
-.top-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 0.5px solid #ffffff10;
-  counter-increment: ranking;
-  min-width: 0;
-}
- 
-.top-list li:last-child {
-  border-bottom: none;
-}
- 
-.top-num {
-  width: 18px;
-  font-size: 20px;
-  color: #ffffff33;
-  text-align: center;
-  flex-shrink: 0;
-}
- 
-.top-num::before {
-  content: counter(ranking);
-}
- 
-.top-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
- 
-.top-info strong {
-  font-size: 15px;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
- 
-.top-info span {
-  font-size: 15px;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
- 
-.top-plays {
-  font-size: 15px;
-  font-weight: 600;
-  color: #F5A623;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
- 
- 
+
+
 /* ════════════════════════════════════════════
    FORMULARIOS E INPUTS
+   Estilos para formularios de creación y edición.
 ════════════════════════════════════════════ */
 .filter-form,
 .form-actions {
@@ -716,81 +991,123 @@ select:focus-visible {
   gap: 10px;
   align-items: center;
 }
- 
+
 .filter-label {
   font-weight: 600;
   color: #ffffff88;
 }
- 
+
 .stack-form {
   display: grid;
   gap: 14px;
 }
- 
+
 .stack-form label {
   display: grid;
   gap: 8px;
   font-weight: 600;
   color: #ffffffcc;
 }
- 
+
 .form-intro,
 .danger-copy {
   margin: 0 0 16px;
   color: var(--muted);
   line-height: 1.5;
 }
- 
+
 input,
 select {
+  width: 100%;
   max-width: 100%;
   padding: 12px 14px;
   border: 1px solid #ffffff18;
   border-radius: 8px;
-  background: #1A1A2E;
-  color: #ffffff;
+  background: var(--bg);
+  color: var(--text);
   font: inherit;
+  box-sizing: border-box;
 }
- 
+
 input:hover,
 select:hover {
   border-color: #ffffff30;
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    BOTONES
+   Sistema de botones reutilizables.
 ════════════════════════════════════════════ */
+
+/* Botón primario — acción principal */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 15px;
-  border: 0;
-  border-radius: 15px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
   background: var(--accent);
-  color: #fff;
+  color: var(--text);
   font: inherit;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease,
-              border-color 160ms ease, box-shadow 160ms ease;
+  text-decoration: none;
+  transition: background 160ms ease;
 }
- 
+
 .btn--primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--text);
 }
- 
+
 .btn--primary:hover {
-  background: #e0264a;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: var(--accent-dark);
 }
- 
-.btn-filter-apply {
+
+.btn-save,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
   background: var(--accent);
-  color: #ffffff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 160ms ease;
+}
+
+.btn-save:hover,
+.button:hover {
+  background: var(--accent-dark);
+}
+
+/* Variante fantasma — acción secundaria */
+.button--ghost {
+  background: transparent;
+  border: 1px solid #ffffff20;
+  color: var(--muted);
+}
+
+.button--ghost:hover {
+  background: #ffffff0e;
+  color: var(--text);
+  border-color: #ffffff40;
+}
+
+/* Botón peligro — eliminar */
+.btn-danger {
+  background: var(--danger);
+  color: var(--text);
   border: none;
   border-radius: 8px;
   padding: 10px 18px;
@@ -799,11 +1116,44 @@ select:hover {
   cursor: pointer;
   transition: background 160ms ease;
 }
- 
-.btn-filter-apply:hover {
-  background: var(--accent-dark);
+
+.btn-danger:hover { background: #8a1f35; }
+
+/* Botón transparente — acciones menores */
+.btn-play {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid #ffffff25;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease;
 }
- 
+
+.btn-play:hover {
+  background: #ffffff0e;
+  border-color: #ffffff45;
+}
+
+/* Botón aplicar filtro */
+.btn-filter-apply {
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.btn-filter-apply:hover { background: var(--accent-dark); }
+
+/* Botón limpiar filtro */
 .btn-filter-clear {
   background: transparent;
   color: var(--muted);
@@ -815,46 +1165,14 @@ select:hover {
   text-decoration: none;
   transition: background 160ms ease, border-color 160ms ease;
 }
- 
+
 .btn-filter-clear:hover {
   background: #ffffff0e;
   color: var(--text);
   border-color: #ffffff40;
 }
- 
-.btn-danger {
-  background: var(--danger);
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 160ms ease;
-}
- 
-.btn-danger:hover {
-  background: #8a1f35;
-}
- 
-.btn-save {
-  background: var(--accent);
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 160ms ease;
-}
- 
-.btn-save:hover {
-  background: var(--accent-dark);
-}
- 
- 
+
+
 /* ════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════ */
@@ -863,7 +1181,7 @@ select:hover {
   background: var(--surface);
   padding: 20px 0;
 }
- 
+
 .footer-inner {
   display: flex;
   flex-direction: column;
@@ -871,34 +1189,30 @@ select:hover {
   gap: 8px;
   text-align: center;
 }
- 
+
 .footer-brand {
   font-weight: 700;
   font-size: 1rem;
   color: var(--accent);
 }
- 
+
 .footer-copy {
   margin: 0;
   font-size: 0.82rem;
   color: var(--muted);
 }
- 
- 
+
+
 /* ════════════════════════════════════════════
    DESKTOP  ·  min-width: 860px
+   Ajustes para pantallas grandes.
 ════════════════════════════════════════════ */
 @media (min-width: 860px) {
- 
-  /* Nav */
-  .nav-toggle {
-    display: none;
-  }
- 
-  .brand {
-    margin: 0;
-  }
- 
+
+  /* Ocultar burger, mostrar nav horizontal */
+  .nav-toggle { display: none; }
+  .brand      { margin: 0; }
+
   .main-nav {
     display: flex;
     flex-direction: row;
@@ -914,64 +1228,73 @@ select:hover {
     width: auto;
     font-size: 1.1rem;
   }
- 
-  /* Layout */
+
+  /* Layout de dos columnas */
   .grid-layout {
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
   }
- 
-  /* Hero */
-  .hero,
-  .detail-hero {
+
+  /* Hero con dos columnas */
+  .hero {
     grid-template-columns: 1.4fr 1fr;
+    align-items: center;
   }
- 
-  .hero-title {
-    font-size: 2.6rem;
-  }
- 
-  .detail-title {
-    font-size: 2rem;
-  }
- 
-  .form-title {
-    font-size: 1.55rem;
-  }
- 
-  .lede {
-    font-size: 1.02rem;
-  }
- 
-  /* Artistas */
-  .artist-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
- 
-  .artist-card {
+
+  .hero-title   { font-size: 2.6rem; }
+  .detail-title { font-size: 2rem; }
+  .form-title   { font-size: 1.55rem; }
+  .lede         { font-size: 1.02rem; }
+
+  /* Shuffle en fila horizontal */
+  .shuffle-main {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .shuffle-actions {
+    flex-wrap: nowrap;
+    margin-left: auto;
+  }
+
+  .shuffle-btn { flex: 0 0 auto; }
+
+  /* Detail hero en fila */
+  .detail-hero__content {
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+    padding-top: 56px;
   }
- 
-  .artist-card__cover {
-    width: 150px;
-    height: 150px;
+
+  .detail-hero__avatar {
+    width: 110px;
+    height: 110px;
   }
- 
-  /* Canciones */
+
+  /* Grid de 3 columnas para artistas */
+  .artist-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Canción en fila horizontal */
   .song-row {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
- 
+
+  .song-info {
+    flex: 1;
+    min-width: 0;
+  }
+
   .song-meta {
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
   }
- 
-  /* Footer */
+
+  /* Footer en fila */
   .footer-inner {
     flex-direction: row;
     justify-content: space-between;
