@@ -72,6 +72,9 @@
               onsubmit="return confirm('Eliminar esta canción?');">
               <button class="btn-danger" type="submit">Eliminar</button>
             </form>
+          {{else}}
+            <a class="btn-save" href="/login?next=/canciones/{{cancion.id}}/editar">Editar canci?n</a>
+            <a class="btn-danger" href="/login?next=/canciones/{{cancion.id}}">Eliminar</a>
           {{/if}}
         </div>
       </div>
