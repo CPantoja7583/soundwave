@@ -19,6 +19,8 @@
       <a class="artist-card__action-btn" href="/artistas/{{id}}">Ver detalle</a>
       {{#if @root.authUser}}
         <a class="artist-card__action-btn" href="/artistas/{{id}}/editar">Editar</a>
+      {{else}}
+        <a class="artist-card__action-btn" href="/login?next=/artistas/{{id}}/editar">Editar</a>
       {{/if}}
     </div>
 
