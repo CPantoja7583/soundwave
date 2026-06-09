@@ -66,11 +66,13 @@
           <form method="POST" action="/canciones/{{cancion.id}}/reproducir">
             <button class="btn-play" type="submit">▶ Registrar reproducción</button>
           </form>
-          <a class="btn-save" href="/canciones/{{cancion.id}}/editar">Editar canción</a>
-          <form method="POST" action="/canciones/{{cancion.id}}/eliminar"
-            onsubmit="return confirm('Eliminar esta canción?');">
-            <button class="btn-danger" type="submit">Eliminar</button>
-          </form>
+          {{#if authUser}}
+            <a class="btn-save" href="/canciones/{{cancion.id}}/editar">Editar canción</a>
+            <form method="POST" action="/canciones/{{cancion.id}}/eliminar"
+              onsubmit="return confirm('Eliminar esta canción?');">
+              <button class="btn-danger" type="submit">Eliminar</button>
+            </form>
+          {{/if}}
         </div>
       </div>
 

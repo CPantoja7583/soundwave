@@ -39,7 +39,15 @@
         <nav class="main-nav">
           <a href="/api/artistas" target="_blank" rel="noreferrer">API artistas</a>
           <a href="/api/canciones/shuffle" target="_blank" rel="noreferrer">Shuffle JSON</a>
-          <a class="btn btn--primary" href="/artistas/nuevo">+ Nuevo artista</a>
+          {{#if authUser}}
+            <span class="nav-user">{{authUser.nombre}}</span>
+            <a class="btn btn--primary" href="/artistas/nuevo">+ Nuevo artista</a>
+            <form class="nav-logout" method="POST" action="/logout">
+              <button class="btn btn--ghost" type="submit">Logout</button>
+            </form>
+          {{else}}
+            <a class="btn btn--primary" href="/login">Login</a>
+          {{/if}}
         </nav>
 
       </div>

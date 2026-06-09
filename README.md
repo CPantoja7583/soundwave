@@ -83,6 +83,41 @@ DB_PASSWORD=postgres
 
 Si no quieres usar los archivos extra, tambien puedes copiar `.env.example` a `.env` y completar tus credenciales de PostgreSQL local.
 
+## Login administrador
+
+SoundWave mantiene la lectura publica del catalogo, pero protege las acciones de administracion:
+
+- crear, editar y eliminar artistas
+- crear, editar y eliminar canciones
+- crear, editar y eliminar albumes
+
+El login usa JWT en una cookie `HttpOnly`, asi funciona bien con las vistas Handlebars y formularios tradicionales.
+
+Configura estas variables en `.env`:
+
+```env
+JWT_SECRET=cambia_este_secreto_largo
+ADMIN_EMAIL=admin@soundwave.local
+ADMIN_PASSWORD=cambia_esta_password
+ADMIN_NAME=SoundWave Admin
+```
+
+Al iniciar la aplicacion, si no existe un usuario con `ADMIN_EMAIL`, se crea automaticamente con la password indicada. En produccion, estas variables deben configurarse en el proveedor de hosting, no subirse al repo.
+
+Rutas web:
+
+- `GET /login`
+- `POST /login`
+- `POST /logout`
+
+La API tambien acepta JWT por header:
+
+```text
+Authorization: Bearer <token>
+```
+
+Los endpoints `GET` de lectura siguen publicos; los endpoints de escritura requieren autenticacion.
+
 ## Ejecucion
 
 Modo normal:
