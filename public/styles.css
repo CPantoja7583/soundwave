@@ -192,6 +192,16 @@ select:focus-visible {
   color: var(--text);
 }
 
+.nav-user {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.nav-logout {
+  margin: 0;
+}
+
 
 /* ════════════════════════════════════════════
    HERO Y SHUFFLE
@@ -1066,6 +1076,18 @@ select:hover {
 
 .btn--primary:hover {
   background: var(--accent-dark);
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid #ffffff20;
+  color: var(--muted);
+}
+
+.btn--ghost:hover {
+  background: #ffffff0e;
+  color: var(--text);
+  border-color: #ffffff40;
 }
 
 .btn-save,

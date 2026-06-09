@@ -30,6 +30,13 @@ const options = {
     ],
 
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT"
+        }
+      },
 
       // Esquemas reutilizables que describen la estructura
       // de los datos que devuelve y recibe la API.

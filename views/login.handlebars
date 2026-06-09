@@ -1,0 +1,30 @@
+<section class="panel form-panel auth-panel">
+  <div class="panel-head">
+    <h1 class="form-title">Login admin</h1>
+  </div>
+
+  <p class="form-intro">Ingresa con la cuenta administradora para crear, editar o eliminar contenido.</p>
+
+  {{#if errorMessage}}
+    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
+  {{/if}}
+
+  <form class="stack-form" method="POST" action="/login">
+    <input type="hidden" name="next" value="{{next}}" />
+
+    <label>
+      Email
+      <input type="email" name="email" value="{{email}}" autocomplete="email" required />
+    </label>
+
+    <label>
+      Password
+      <input type="password" name="password" autocomplete="current-password" required />
+    </label>
+
+    <div class="form-actions">
+      <button class="button" type="submit">Entrar</button>
+      <a class="button button--ghost" href="/">Volver</a>
+    </div>
+  </form>
+</section>

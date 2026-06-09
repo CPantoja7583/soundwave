@@ -17,7 +17,9 @@
     {{!-- Botones de navegación que aparecen sobre el hero --}}
     <div class="artist-card__actions">
       <a class="artist-card__action-btn" href="/artistas/{{id}}">Ver detalle</a>
-      <a class="artist-card__action-btn" href="/artistas/{{id}}/editar">Editar</a>
+      {{#if @root.authUser}}
+        <a class="artist-card__action-btn" href="/artistas/{{id}}/editar">Editar</a>
+      {{/if}}
     </div>
 
   </div>
