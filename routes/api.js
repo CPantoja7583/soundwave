@@ -1,6 +1,7 @@
 const express = require("express");
 const artistaController = require("../controllers/api/artistaController");
 const cancionController = require("../controllers/api/cancionController");
+const { requireAuth } = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -71,6 +72,8 @@ router.get("/genero/:genero", artistaController.buscarPorGenero);
  *                     $ref: '#/components/schemas/Artista'
  *   post:
  *     summary: Crear artista
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Artistas]
  *     requestBody:
  *       required: true
@@ -102,7 +105,7 @@ router.get("/genero/:genero", artistaController.buscarPorGenero);
  *               $ref: '#/components/schemas/ApiError'
  */
 router.get("/artistas", artistaController.listarArtistas);
-router.post("/artistas", artistaController.crearArtista);
+router.post("/artistas", requireAuth, artistaController.crearArtista);
 
 /**
  * @swagger
@@ -138,6 +141,8 @@ router.post("/artistas", artistaController.crearArtista);
  *               $ref: '#/components/schemas/ApiError'
  *   put:
  *     summary: Actualizar artista
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Artistas]
  *     parameters:
  *       - in: path
@@ -182,6 +187,8 @@ router.post("/artistas", artistaController.crearArtista);
  *               $ref: '#/components/schemas/ApiError'
  *   delete:
  *     summary: Eliminar artista
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Artistas]
  *     parameters:
  *       - in: path
@@ -212,8 +219,8 @@ router.post("/artistas", artistaController.crearArtista);
  *               $ref: '#/components/schemas/ApiError'
  */
 router.get("/artistas/:id", artistaController.obtenerArtista);
-router.put("/artistas/:id", artistaController.actualizarArtista);
-router.delete("/artistas/:id", artistaController.eliminarArtista);
+router.put("/artistas/:id", requireAuth, artistaController.actualizarArtista);
+router.delete("/artistas/:id", requireAuth, artistaController.eliminarArtista);
 
 /**
  * @swagger
@@ -251,6 +258,8 @@ router.delete("/artistas/:id", artistaController.eliminarArtista);
  *               $ref: '#/components/schemas/ApiError'
  *   post:
  *     summary: Crear cancion para un artista
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Canciones]
  *     parameters:
  *       - in: path
@@ -295,13 +304,15 @@ router.delete("/artistas/:id", artistaController.eliminarArtista);
  *               $ref: '#/components/schemas/ApiError'
  */
 router.get("/artistas/:id/canciones", cancionController.listarPorArtista);
-router.post("/artistas/:id/canciones", cancionController.crearPorArtista);
+router.post("/artistas/:id/canciones", requireAuth, cancionController.crearPorArtista);
 
 /**
  * @swagger
  * /api/canciones/{id}:
  *   delete:
  *     summary: Eliminar cancion
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Canciones]
  *     parameters:
  *       - in: path
@@ -331,7 +342,7 @@ router.post("/artistas/:id/canciones", cancionController.crearPorArtista);
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
-router.delete("/canciones/:id", cancionController.eliminarCancion);
+router.delete("/canciones/:id", requireAuth, cancionController.eliminarCancion);
 
 /**
  * @swagger

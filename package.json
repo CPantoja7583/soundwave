@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "soundwave",
   "version": "1.0.0",
   "description": "Plataforma colaborativa de gestion musical con Express, Sequelize y Handlebars.",
@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "node --watch app.js",
     "seed": "node scripts/seed.js",
-    "check": "node --check app.js && node --check config/database.js && node --check models/index.js && node --check controllers/api/artistaController.js && node --check controllers/api/cancionController.js && node --check controllers/web/homeController.js && node --check controllers/web/artistaViewController.js && node --check routes/api.js && node --check routes/web.js && node --check scripts/seed.js"
+    "check": "node --check app.js && node --check config/database.js && node --check models/index.js && node --check models/Usuario.js && node --check controllers/api/artistaController.js && node --check controllers/api/cancionController.js && node --check controllers/web/homeController.js && node --check controllers/web/artistaViewController.js && node --check controllers/web/authController.js && node --check middlewares/auth.js && node --check utils/auth.js && node --check routes/api.js && node --check routes/web.js && node --check scripts/seed.js && node --check scripts/ensureAdmin.js"
   },
   "keywords": [
     "express",
@@ -19,9 +19,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
+    "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "pg": "^8.16.0",
     "pg-hstore": "^2.3.4",

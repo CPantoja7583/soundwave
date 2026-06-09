@@ -2,12 +2,15 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const { create } = require("express-handlebars");
 const webRoutes = require("./routes/web");
 const apiRoutes = require("./routes/api");
 const { sequelize } = require("./models");
 const { seedDatabase } = require("./scripts/seed");
+const { ensureAdminUser } = require("./scripts/ensureAdmin");
 const { swaggerUi, swaggerSpec } = require("./config/swagger");
+const { attachCurrentUser } = require("./middlewares/auth");
 
 // Creamos la aplicacion principal de Express.
 // Desde aqui configuramos middlewares, rutas y el arranque del servidor.
@@ -36,6 +39,8 @@ app.set("views", path.join(__dirname, "views"));
 // - express.static() expone CSS e imagenes al navegador
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(attachCurrentUser);
 app.use(express.static(path.join(__dirname, "public")));
 
 // Ruta de salud para comprobar rapido que la aplicacion esta levantada.
@@ -87,6 +92,7 @@ async function startServer() {
     // alter:true ayuda a que este proyecto academico incorpore
     // nuevos campos y tablas sin migraciones manuales.
     await sequelize.sync({ alter: true });
+    await ensureAdminUser();
     await seedDatabase();
 
     app.listen(PORT, () => {

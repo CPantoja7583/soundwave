@@ -2,11 +2,13 @@ const sequelize = require("../config/database");
 const buildArtista = require("./Artista");
 const buildCancion = require("./Cancion");
 const buildAlbum = require("./album");
+const buildUsuario = require("./Usuario");
 
 // Construimos los modelos usando la misma conexión a la base.
 const Artista = buildArtista(sequelize);
 const Cancion = buildCancion(sequelize);
 const Album = buildAlbum(sequelize);
+const Usuario = buildUsuario(sequelize);
 
 // Declaramos las asociaciones en un solo lugar para tener
 // un punto único de verdad sobre las relaciones del proyecto.
@@ -66,5 +68,6 @@ module.exports = {
   sequelize,
   Artista,
   Cancion,
-  Album
+  Album,
+  Usuario
 };

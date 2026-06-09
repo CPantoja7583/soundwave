@@ -1,4 +1,4 @@
-{{#if errorMessage}}
+﻿{{#if errorMessage}}
   <section class="panel">
     <p class="error-text" aria-live="polite">{{errorMessage}}</p>
   </section>
@@ -10,7 +10,6 @@
     </section>
   {{/if}}
 
-  <!-- HERO -->
   <section class="detail-hero">
     <div class="detail-hero__bg">
       {{#if artist.foto}}
@@ -19,7 +18,9 @@
       <div class="detail-hero__overlay"></div>
     </div>
 
-    <a class="detail-hero__edit" href="/artistas/{{artist.id}}/editar">Editar artista</a>
+    {{#if authUser}}
+      <a class="detail-hero__edit" href="/artistas/{{artist.id}}/editar">Editar artista</a>
+    {{/if}}
 
     <div class="detail-hero__content">
       <div class="detail-hero__left">
@@ -51,8 +52,6 @@
   </section>
 
   <section class="grid-layout">
-
-    <!-- COLUMNA IZQUIERDA: canciones -->
     <div class="panel">
       <div class="panel-head">
         <h2>Canciones</h2>
@@ -62,7 +61,6 @@
         <div class="song-list">
           {{#each artist.canciones}}
             <article class="song-row">
-
               <div class="song-cover">
                 {{#if album.portada}}
                   <img src="/uploads/albums/{{album.portada}}" alt="{{album.nombre}}" class="song-cover__img" />
@@ -81,25 +79,23 @@
                 <form method="POST" action="/canciones/{{id}}/reproducir">
                   <button class="btn-play" type="submit">▶ Reproducir</button>
                 </form>
-                <a class="btn-play" href="/canciones/{{id}}/editar">Editar</a>
-                <form method="POST" action="/canciones/{{id}}/eliminar"
-                  onsubmit="return confirm('Eliminar esta cancion?');">
-                  <button class="btn-danger" type="submit">Eliminar</button>
-                </form>
+                {{#if @root.authUser}}
+                  <a class="btn-play" href="/canciones/{{id}}/editar">Editar</a>
+                  <form method="POST" action="/canciones/{{id}}/eliminar"
+                    onsubmit="return confirm('Eliminar esta canción?');">
+                    <button class="btn-danger" type="submit">Eliminar</button>
+                  </form>
+                {{/if}}
               </div>
-
             </article>
           {{/each}}
         </div>
       {{else}}
-        <p class="empty-state">Este artista aun no tiene canciones cargadas.</p>
+        <p class="empty-state">Este artista aún no tiene canciones cargadas.</p>
       {{/if}}
     </div>
 
-    <!-- COLUMNA DERECHA: sidebar -->
     <aside class="sidebar">
-
-      <!-- Panel álbumes -->
       <div class="panel">
         <div class="panel-head">
           <h2>Álbumes</h2>
@@ -116,7 +112,9 @@
                   <span class="album-thumb--vacio">🎵</span>
                 {{/if}}
                 <span>{{nombre}}</span>
-                <a class="btn-play" href="/albums/{{id}}/editar">Editar</a>
+                {{#if @root.authUser}}
+                  <a class="btn-play" href="/albums/{{id}}/editar">Editar</a>
+                {{/if}}
               </li>
             {{/each}}
           </ul>
@@ -125,71 +123,69 @@
         {{/if}}
       </div>
 
-      <!-- Panel agregar canción -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Agregar canción</h2>
-        </div>
-
-        <form class="stack-form" method="POST"
-          action="/artistas/{{artist.id}}/canciones"
-          enctype="multipart/form-data">
-
-          <label>
-            Titulo
-            <input type="text" name="titulo" autocomplete="off" required />
-          </label>
-
-          <label>
-            Album
-            <select name="albumId" id="albumId" onchange="toggleNuevoAlbum(this.value)">
-              {{#each artist.albums}}
-                <option value="{{id}}">{{nombre}}</option>
-              {{/each}}
-              <option value="nuevo">+ Nuevo álbum</option>
-            </select>
-          </label>
-
-          <div id="nuevo-album" style="display:none; gap:14px; flex-direction:column;">
-            <label>
-              Nombre del álbum
-              <input type="text" name="nuevoAlbum" autocomplete="off" />
-            </label>
-            <label>
-              Portada del álbum (opcional)
-              <input type="file" name="portada" accept="image/*" />
-            </label>
+      {{#if authUser}}
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Agregar canción</h2>
           </div>
 
-          <label>
-            Duración (segundos)
-            <input type="number" name="duracion" min="1" inputmode="numeric" required />
-          </label>
+          <form class="stack-form" method="POST"
+            action="/artistas/{{artist.id}}/canciones"
+            enctype="multipart/form-data">
 
-          <label>
-            Link de YouTube
-            <input type="url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required />
-          </label>
+            <label>
+              Título
+              <input type="text" name="titulo" autocomplete="off" required />
+            </label>
 
-          <button class="btn-save" type="submit">Guardar canción</button>
-        </form>
-      </div>
+            <label>
+              Álbum
+              <select name="albumId" id="albumId" onchange="toggleNuevoAlbum(this.value)">
+                {{#each artist.albums}}
+                  <option value="{{id}}">{{nombre}}</option>
+                {{/each}}
+                <option value="nuevo">+ Nuevo álbum</option>
+              </select>
+            </label>
 
-      <!-- Panel zona de peligro -->
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Zona de peligro</h2>
+            <div id="nuevo-album" style="display:none; gap:14px; flex-direction:column;">
+              <label>
+                Nombre del álbum
+                <input type="text" name="nuevoAlbum" autocomplete="off" />
+              </label>
+              <label>
+                Portada del álbum (opcional)
+                <input type="file" name="portada" accept="image/*" />
+              </label>
+            </div>
+
+            <label>
+              Duración (segundos)
+              <input type="number" name="duracion" min="1" inputmode="numeric" required />
+            </label>
+
+            <label>
+              Link de YouTube
+              <input type="url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required />
+            </label>
+
+            <button class="btn-save" type="submit">Guardar canción</button>
+          </form>
         </div>
-        <p class="danger-copy">Esta acción borra el artista y todas las canciones asociadas.</p>
-        <form class="danger-zone" method="POST"
-          action="/artistas/{{artist.id}}/eliminar"
-          onsubmit="return confirm('Eliminar este artista y todas sus canciones?');">
-          <button class="btn-danger" type="submit">Eliminar artista</button>
-        </form>
-      </div>
 
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Zona de peligro</h2>
+          </div>
+          <p class="danger-copy">Esta acción borra el artista y todas las canciones asociadas.</p>
+          <form class="danger-zone" method="POST"
+            action="/artistas/{{artist.id}}/eliminar"
+            onsubmit="return confirm('Eliminar este artista y todas sus canciones?');">
+            <button class="btn-danger" type="submit">Eliminar artista</button>
+          </form>
+        </div>
+      {{/if}}
     </aside>
-
   </section>
 
 {{/if}}
