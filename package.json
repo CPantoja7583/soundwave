@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "soundwave",
   "version": "1.0.0",
   "description": "Plataforma colaborativa de gestion musical con Express, Sequelize y Handlebars.",
