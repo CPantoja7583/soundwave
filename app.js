@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const passport = require("passport");
 const { create } = require("express-handlebars");
 const webRoutes = require("./routes/web");
 const apiRoutes = require("./routes/api");
@@ -11,11 +12,14 @@ const { seedDatabase } = require("./scripts/seed");
 const { ensureAdminUser } = require("./scripts/ensureAdmin");
 const { swaggerUi, swaggerSpec } = require("./config/swagger");
 const { attachCurrentUser } = require("./middlewares/auth");
+const { configurePassport } = require("./config/passport");
 
 // Creamos la aplicacion principal de Express.
 // Desde aqui configuramos middlewares, rutas y el arranque del servidor.
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+
+configurePassport();
 
 // Handlebars sera el motor de vistas del proyecto.
 // El helper "eq" sirve para comparar valores dentro de las plantillas.
@@ -24,6 +28,9 @@ const hbs = create({
   helpers: {
     eq(left, right) {
       return left === right;
+    },
+    encodeURIComponent(value) {
+      return encodeURIComponent(String(value || ""));
     }
   }
 });
@@ -40,6 +47,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(passport.initialize());
 app.use(attachCurrentUser);
 app.use(express.static(path.join(__dirname, "public")));
 

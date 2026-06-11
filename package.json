@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "node --watch app.js",
     "seed": "node scripts/seed.js",
-    "check": "node --check app.js && node --check config/database.js && node --check models/index.js && node --check models/Usuario.js && node --check controllers/api/artistaController.js && node --check controllers/api/cancionController.js && node --check controllers/web/homeController.js && node --check controllers/web/artistaViewController.js && node --check controllers/web/authController.js && node --check middlewares/auth.js && node --check utils/auth.js && node --check routes/api.js && node --check routes/web.js && node --check scripts/seed.js && node --check scripts/ensureAdmin.js"
+    "check": "node --check app.js && node --check config/database.js && node --check config/passport.js && node --check models/index.js && node --check models/Usuario.js && node --check controllers/api/artistaController.js && node --check controllers/api/cancionController.js && node --check controllers/web/homeController.js && node --check controllers/web/artistaViewController.js && node --check controllers/web/authController.js && node --check middlewares/auth.js && node --check utils/auth.js && node --check routes/api.js && node --check routes/web.js && node --check scripts/seed.js && node --check scripts/ensureAdmin.js"
   },
   "keywords": [
     "express",
@@ -26,6 +26,9 @@
     "express-handlebars": "^8.0.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-microsoft": "^2.1.0",
     "pg": "^8.16.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
