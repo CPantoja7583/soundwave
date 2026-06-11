@@ -708,12 +708,31 @@ select:focus-visible {
 }
 
 .artist-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface-overlay);
   overflow: hidden;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.artist-card__stretched-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+}
+
+.artist-card__stretched-link:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: -4px;
+}
+
+.artist-card:hover {
+  border-color: rgba(233, 69, 96, 0.45);
+  transform: translateY(-2px);
 }
 
 /* Imagen hero de la card */
@@ -772,7 +791,7 @@ select:focus-visible {
   right: 10px;
   display: flex;
   gap: 6px;
-  z-index: 2;
+  z-index: 4;
 }
 
 .artist-card__action-btn {
