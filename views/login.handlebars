@@ -1,47 +1,55 @@
-<section class="panel form-panel auth-panel">
-  <div class="panel-head">
-    <h1 class="form-title">Iniciar sesión</h1>
-  </div>
+<section class="auth-shell">
+  <div class="auth-card auth-card--login">
+    <a class="auth-brand" href="/" aria-label="Volver al inicio de SoundWave">
+      <span class="auth-brand__mark">~</span>
+      <span>SoundWave</span>
+    </a>
 
-  <p class="form-intro">Ingresa para crear, editar o eliminar contenido en SoundWave.</p>
-
-  {{#if errorMessage}}
-    <p class="error-text" aria-live="polite">{{errorMessage}}</p>
-  {{/if}}
-
-  <div class="oauth-actions" aria-label="Opciones de inicio de sesión externas">
-    {{#if googleEnabled}}
-      <a class="button button--ghost oauth-button" href="/auth/google?next={{encodeURIComponent next}}">Continuar con Google</a>
-    {{else}}
-      <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Google no configurado</span>
-    {{/if}}
-
-    {{#if microsoftEnabled}}
-      <a class="button button--ghost oauth-button" href="/auth/microsoft?next={{encodeURIComponent next}}">Continuar con Microsoft</a>
-    {{else}}
-      <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Microsoft no configurado</span>
-    {{/if}}
-  </div>
-
-  <div class="auth-separator"><span>o usa tu email</span></div>
-
-  <form class="stack-form" method="POST" action="/login">
-    <input type="hidden" name="next" value="{{next}}" />
-
-    <label>
-      Email
-      <input type="email" name="email" value="{{email}}" autocomplete="email" required />
-    </label>
-
-    <label>
-      Contraseña
-      <input type="password" name="password" autocomplete="current-password" required />
-    </label>
-
-    <div class="form-actions">
-      <button class="button" type="submit">Entrar</button>
-      <a class="button button--ghost" href="/register?next={{encodeURIComponent next}}">Crear cuenta</a>
-      <a class="button button--ghost" href="/">Volver</a>
+    <div class="auth-heading">
+      <p class="auth-eyebrow">Login</p>
+      <h1 class="form-title">¡Hola de nuevo!</h1>
+      <p class="form-intro">Inicia sesión para administrar artistas, canciones y álbumes.</p>
     </div>
-  </form>
+
+    {{#if errorMessage}}
+      <p class="error-text" aria-live="polite">{{errorMessage}}</p>
+    {{/if}}
+
+    <form class="stack-form auth-form" method="POST" action="/login">
+      <input type="hidden" name="next" value="{{next}}" />
+
+      <label>
+        Email
+        <input type="email" name="email" value="{{email}}" autocomplete="email" required />
+      </label>
+
+      <label>
+        Contraseña
+        <input type="password" name="password" autocomplete="current-password" required />
+      </label>
+
+      <button class="button auth-submit" type="submit">Iniciar sesión</button>
+    </form>
+
+    <div class="auth-separator"><span>o continúa con</span></div>
+
+    <div class="oauth-actions" aria-label="Opciones de inicio de sesión externas">
+      {{#if googleEnabled}}
+        <a class="button button--ghost oauth-button" href="/auth/google?next={{encodeURIComponent next}}">Continuar con Google</a>
+      {{else}}
+        <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Google no configurado</span>
+      {{/if}}
+
+      {{#if microsoftEnabled}}
+        <a class="button button--ghost oauth-button" href="/auth/microsoft?next={{encodeURIComponent next}}">Continuar con Microsoft</a>
+      {{else}}
+        <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Microsoft no configurado</span>
+      {{/if}}
+    </div>
+
+    <p class="auth-switch">
+      ¿No tienes cuenta?
+      <a href="/register?next={{encodeURIComponent next}}">Regístrate</a>
+    </p>
+  </div>
 </section>
