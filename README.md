@@ -1,99 +1,129 @@
 # SoundWave
 
-Proyecto grupal base para una plataforma de gestion musical estilo Spotify usando Node.js, Express, Sequelize, PostgreSQL y Handlebars.
+SoundWave es una plataforma musical colaborativa hecha con **Node.js, Express, Sequelize, PostgreSQL y Handlebars**. El proyecto mezcla una app web renderizada en servidor con una API REST documentada para probar en Swagger o Postman.
 
-## Que incluye esta base
-
-- arquitectura MVC simple y legible
-- Sequelize conectado a PostgreSQL
-- modelos `Artista` y `Cancion`
-- relacion uno a muchos entre artistas y canciones
-- API REST para artistas y canciones
-- vistas Handlebars para home, detalle y formularios
-- extras utiles: top 10, shuffle y contador de reproducciones
-- comentarios cortos para ayudar al equipo a entender la estructura
-- `docker-compose.yml` para levantar PostgreSQL rapido en desarrollo
-
-## Requisitos
-
-- Node.js 20 o superior
-- npm
-- PostgreSQL
-
-Docker es opcional. El proyecto puede levantarse con PostgreSQL local sin problema.
-
-## Instalacion
+## Ruta r?pida para levantar el proyecto
 
 ```bash
 npm install
 ```
 
-## Configuracion rapida
+Luego elige una base de datos:
 
-Hay dos formas de levantar la base de datos.
+### PostgreSQL local
 
-### Opcion A: PostgreSQL local
-
-1. Crea una base de datos llamada `soundwave`.
+1. Crea una base llamada `soundwave`.
 2. Copia `.env.local-postgres.example` a `.env`.
-3. Reemplaza `DB_PASSWORD=tu_password` por tu clave real de PostgreSQL.
-
-Si usas `psql`, puedes crear la base con:
+3. Ajusta `DB_PASSWORD` con tu clave real.
+4. Ejecuta:
 
 ```bash
-psql -U postgres -h 127.0.0.1 -p 5432 -d postgres -c "CREATE DATABASE soundwave;"
+npm start
 ```
 
-Si usas pgAdmin, crea una base nueva llamada `soundwave` antes de iniciar la app.
-
-Ejemplo:
-
-```env
-PORT=3000
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_NAME=soundwave
-DB_USER=postgres
-DB_PASSWORD=tu_password
-```
-
-### Opcion B: PostgreSQL con Docker
+### PostgreSQL con Docker
 
 1. Copia `.env.docker.example` a `.env`.
-2. Levanta la base:
+2. Levanta PostgreSQL:
 
 ```bash
 docker compose up -d
 ```
 
-En esta opcion el contenedor expone PostgreSQL en el puerto `5433` para no chocar con instalaciones locales que ya usen `5432`.
+3. Ejecuta la app:
 
-Ejemplo:
-
-```env
-PORT=3000
-DB_HOST=127.0.0.1
-DB_PORT=5433
-DB_NAME=soundwave
-DB_USER=postgres
-DB_PASSWORD=postgres
+```bash
+npm start
 ```
 
-## Archivo `.env` por defecto
+La versi?n Docker usa el puerto `5433` para evitar choques con instalaciones locales de PostgreSQL.
 
-Si no quieres usar los archivos extra, tambien puedes copiar `.env.example` a `.env` y completar tus credenciales de PostgreSQL local.
+## Qu? incluye
 
-## Login, registro y OAuth
+- Frontend server-side con Handlebars.
+- Backend Express organizado en MVC.
+- Persistencia PostgreSQL con Sequelize.
+- Autenticaci?n con JWT en cookie `HttpOnly`.
+- Registro local con email y contrase?a.
+- Login con Google preparado y activable por variables de entorno.
+- Login con Microsoft preparado, pendiente de credenciales.
+- API REST documentada con Swagger.
+- Colecci?n Postman para pruebas.
+- Seed inicial con artistas, ?lbumes, portadas y URLs de YouTube.
 
-SoundWave mantiene la lectura publica del catalogo, pero protege las acciones de administracion:
+## C?mo se organiza la arquitectura
 
-- crear, editar y eliminar artistas
-- crear, editar y eliminar canciones
-- crear, editar y eliminar albumes
+| Carpeta | Responsabilidad |
+|---|---|
+| `app.js` | Crea la app Express, configura middlewares, rutas, Swagger y arranque. |
+| `config/` | Configuraci?n de base de datos, uploads, Swagger y OAuth. |
+| `models/` | Modelos Sequelize y relaciones entre tablas. |
+| `controllers/web/` | Controladores que renderizan vistas o redirigen. |
+| `controllers/api/` | Controladores que responden JSON para la API REST. |
+| `routes/` | Define qu? URL llama a qu? controlador. |
+| `views/` | Layouts, p?ginas y partials Handlebars. |
+| `public/` | CSS, JavaScript del navegador, im?genes y uploads p?blicos. |
+| `scripts/` | Utilidades como seed inicial y creaci?n de admin. |
+| `postman/` | Colecci?n y environment para probar la API. |
 
-El login usa JWT en una cookie `HttpOnly`, asi funciona bien con las vistas Handlebars y formularios tradicionales. Cualquier persona puede crear una cuenta local desde `/register` y entrar para colaborar.
+## Flujo mental del backend
 
-Configura estas variables base en `.env`:
+1. El navegador o Postman hace una petici?n.
+2. Express recibe la URL en `routes/`.
+3. La ruta llama a un controlador.
+4. El controlador usa modelos Sequelize si necesita datos.
+5. Sequelize consulta PostgreSQL.
+6. La respuesta vuelve como vista HTML, redirecci?n o JSON.
+
+Ejemplo web:
+
+```text
+GET /artistas/1 -> routes/web.js -> artistaViewController -> Sequelize -> PostgreSQL -> vista detalle
+```
+
+Ejemplo API:
+
+```text
+GET /api/artistas -> routes/api.js -> artistaController -> Sequelize -> PostgreSQL -> JSON
+```
+
+## Base de datos y seed
+
+Al iniciar, la app ejecuta:
+
+```js
+sequelize.sync({ alter: true })
+```
+
+Esto crea o ajusta tablas autom?ticamente para este proyecto acad?mico. Despu?s corre `seedDatabase()`.
+
+La semilla solo carga datos si la tabla `artistas` est? vac?a. Por eso, si quieres aplicar un seed nuevo en una base existente, debes limpiar primero el cat?logo:
+
+```sql
+TRUNCATE TABLE canciones, albums, artistas RESTART IDENTITY CASCADE;
+```
+
+Importante: no borres `usuarios` si quieres conservar accesos.
+
+## Autenticaci?n
+
+SoundWave usa JWT en una cookie `HttpOnly` llamada `soundwave_token`.
+
+### Rutas web
+
+| Ruta | Uso |
+|---|---|
+| `GET /login` | Muestra formulario de inicio de sesi?n. |
+| `POST /login` | Valida email/password y crea cookie JWT. |
+| `GET /register` | Muestra formulario de registro. |
+| `POST /register` | Crea usuario local y entra autom?ticamente. |
+| `POST /logout` | Borra cookie y cierra sesi?n. |
+| `GET /auth/google` | Inicia OAuth con Google si est? configurado. |
+| `GET /auth/google/callback` | Recibe respuesta de Google. |
+| `GET /auth/microsoft` | Inicia OAuth con Microsoft si est? configurado. |
+| `GET /auth/microsoft/callback` | Recibe respuesta de Microsoft. |
+
+### Variables necesarias
 
 ```env
 JWT_SECRET=cambia_este_secreto_largo
@@ -102,134 +132,62 @@ ADMIN_PASSWORD=cambia_esta_password
 ADMIN_NAME=SoundWave Admin
 ```
 
-Al iniciar la aplicacion, si no existe un usuario con `ADMIN_EMAIL`, se crea automaticamente con la password indicada. En produccion, estas variables deben configurarse en el proveedor de hosting, no subirse al repo.
+`ensureAdminUser()` crea un admin inicial al arrancar si `ADMIN_EMAIL` y `ADMIN_PASSWORD` existen y todav?a no hay un usuario con ese email.
 
-Rutas web:
+### Google OAuth
 
-- `GET /login`
-- `POST /login`
-- `GET /register`
-- `POST /register`
-- `POST /logout`
-
-OAuth con Google y Microsoft queda preparado, pero solo se activa si existen credenciales reales:
+Para activar Google en producci?n, en Northflank deben existir:
 
 ```env
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GOOGLE_CALLBACK_URL=http://127.0.0.1:3000/auth/google/callback
-MICROSOFT_CLIENT_ID=
-MICROSOFT_CLIENT_SECRET=
-MICROSOFT_CALLBACK_URL=http://127.0.0.1:3000/auth/microsoft/callback
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_CALLBACK_URL=https://tarea.espacioalerce.cl/auth/google/callback
 ```
 
-En produccion, las callback URLs deben usar el dominio real:
+En Google Cloud Console, el OAuth Client debe ser tipo **Web application** y debe tener exactamente este redirect URI:
 
 ```text
 https://tarea.espacioalerce.cl/auth/google/callback
-https://tarea.espacioalerce.cl/auth/microsoft/callback
 ```
 
-La API tambien acepta JWT por header:
+Si no coincide exactamente, Google muestra `redirect_uri_mismatch`.
 
-```text
-Authorization: Bearer <token>
+### Microsoft OAuth
+
+Microsoft est? preparado, pero requiere credenciales de Azure/Microsoft Entra:
+
+```env
+MICROSOFT_CLIENT_ID=...
+MICROSOFT_CLIENT_SECRET=...
+MICROSOFT_CALLBACK_URL=https://tarea.espacioalerce.cl/auth/microsoft/callback
 ```
 
-Los endpoints `GET` de lectura siguen publicos; los endpoints de escritura requieren autenticacion.
+## Roles y permisos
 
-## Ejecucion
+Actualmente `requireAuth` solo exige que exista una sesi?n v?lida. Eso significa que cualquier usuario registrado puede usar acciones protegidas como crear, editar o eliminar contenido.
 
-Modo normal:
+Para una versi?n m?s segura, el siguiente paso ser?a agregar `requireAdmin` y permitir acciones destructivas solo a usuarios con `role = "admin"`.
 
-```bash
-npm start
-```
+## UI actual
 
-Modo desarrollo:
-
-```bash
-npm run dev
-```
-
-La aplicacion usa `sequelize.sync()` al iniciar. Si la base esta vacia, tambien carga datos iniciales desde `scripts/seed.js`.
-
-## Verificacion rapida
-
-1. Asegurate de que PostgreSQL este corriendo.
-2. Ejecuta:
-
-```bash
-npm run check
-npm start
-```
-
-3. Abre:
-
-```text
-http://127.0.0.1:3000
-```
-
-Si todo va bien, deberias ver artistas sembrados automaticamente la primera vez.
-
-## Scripts utiles
-
-```bash
-npm run seed
-npm run check
-```
+- El header p?blico muestra solo `Login`.
+- El registro vive dentro de la pantalla de login como acci?n secundaria.
+- Las cards de artistas son clickeables y llevan al detalle.
+- El detalle de artista muestra acciones de edici?n/eliminaci?n solo si hay sesi?n.
 
 ## Swagger y Postman
 
-La API ahora puede probarse de dos formas:
-
-### Swagger UI
-
-Con el servidor levantado, abre:
+Con el servidor levantado:
 
 ```text
 http://127.0.0.1:3000/api-docs
-```
-
-Y si necesitas el spec crudo:
-
-```text
 http://127.0.0.1:3000/api-docs.json
 ```
 
-Swagger sirve como documentacion viva del backend y permite probar endpoints REST desde el navegador.
-
-### Postman
-
-En la carpeta `postman/` quedan dos archivos listos para importar:
+En `postman/`:
 
 - `SoundWave.postman_collection.json`
 - `SoundWave.local.postman_environment.json`
-
-Orden sugerido para la demo del profe:
-
-1. `GET /api/artistas`
-2. `POST /api/artistas`
-3. `GET /api/artistas/{id}`
-4. `POST /api/artistas/{id}/canciones`
-5. `POST /api/canciones/{id}/play`
-6. `GET /api/canciones/shuffle`
-7. `DELETE /api/canciones/{id}`
-8. `DELETE /api/artistas/{id}`
-
-Swagger ayuda a entender y documentar la API.
-Postman sirve como evidencia practica para la evaluacion.
-
-## Estructura MVC
-
-- `config/`: conexion a base de datos
-- `models/`: definicion de entidades y relaciones
-- `controllers/api/`: respuestas JSON
-- `controllers/web/`: render de vistas y formularios
-- `routes/`: separacion entre rutas web y API
-- `views/`: layouts, partials y paginas Handlebars
-- `public/`: CSS estatico
-- `scripts/`: utilidades como la siembra de datos
 
 ## Endpoints API principales
 
@@ -244,53 +202,39 @@ Postman sirve como evidencia practica para la evaluacion.
 - `POST /api/canciones/:id/play`
 - `GET /api/canciones/shuffle`
 
+Los endpoints `GET` son p?blicos. Las operaciones de escritura requieren autenticaci?n.
+
+## Comandos ?tiles
+
+```bash
+npm run check
+npm start
+npm run dev
+npm run seed
+```
+
+## Verificaci?n r?pida antes de subir cambios
+
+```bash
+npm run check
+```
+
+Tambi?n revisa que los archivos JSON no tengan BOM invisible, porque Northflank ya fall? una vez por un `package.json` con BOM.
+
 ## Reparto sugerido para el equipo
 
-### Integrante 1: modelos y base de datos
+| ?rea | Archivos sugeridos |
+|---|---|
+| Base de datos | `models/`, `config/database.js`, `scripts/seed.js` |
+| API REST | `routes/api.js`, `controllers/api/`, Swagger/Postman |
+| Vistas web | `views/`, `controllers/web/`, `public/styles.css` |
+| Autenticaci?n | `controllers/web/authController.js`, `middlewares/auth.js`, `utils/auth.js`, `config/passport.js` |
+| Deploy | Northflank, Neon, variables de entorno, GitHub branches |
 
-- revisar `config/database.js`
-- entender `models/Artista.js`, `models/Cancion.js` y `models/index.js`
-- crear la base `soundwave` y apoyar al equipo con la configuracion de `.env`
+## Flujo de ramas usado por el equipo
 
-### Integrante 2: API REST
+```text
+develop -> qa -> main
+```
 
-- trabajar en `controllers/api/` y `routes/api.js`
-- mejorar respuestas JSON, validaciones y manejo de errores
-- agregar pruebas de endpoints
-
-### Integrante 3: vistas y UX
-
-- trabajar en `controllers/web/`, `views/` y `public/styles.css`
-- mejorar formularios, estados vacios y consistencia visual
-
-### Integrante 4: extras y coordinacion
-
-- profundizar en ranking, shuffle y reproducciones
-- documentar el proyecto
-- coordinar ramas, PRs y revisiones
-
-## Flujo Git recomendado
-
-Para este repo ya dejamos un flujo mas ordenado:
-
-- `develop`: integracion del equipo
-- `qa`: validacion previa
-- `main`: version estable
-
-Sugerencia de trabajo:
-
-1. crear ramas cortas desde `develop`
-2. abrir PR hacia `develop`
-3. pasar de `develop` a `qa`
-4. pasar de `qa` a `main` cuando todo este revisado
-
-## Nota importante sobre SQLite
-
-Si todavia ves un archivo `data/soundwave.sqlite`, tomalo como un resto antiguo del proyecto. La version actual de SoundWave debe levantarse con PostgreSQL.
-
-## Idea para exposicion en grupo
-
-- mostrar primero la home y el detalle de artista
-- luego explicar la relacion `Artista -> Cancion`
-- despues mostrar la API REST
-- cerrar con extras: reproducir, top 10 y shuffle
+`main` despliega en Northflank. Evita subir archivos locales como `.env`, backups o claves.
