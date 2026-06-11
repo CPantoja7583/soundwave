@@ -14,6 +14,12 @@ const router = express.Router();
 router.get("/", homeController.renderHome);
 router.get("/login", authController.renderLogin);
 router.post("/login", authController.login);
+router.get("/register", authController.renderRegister);
+router.post("/register", authController.register);
+router.get("/auth/google", authController.startGoogleLogin);
+router.get("/auth/google/callback", authController.handleGoogleCallback);
+router.get("/auth/microsoft", authController.startMicrosoftLogin);
+router.get("/auth/microsoft/callback", authController.handleMicrosoftCallback);
 router.post("/logout", authController.logout);
 
 // Reutilizamos la home con filtro por género en vez de crear una vista aparte

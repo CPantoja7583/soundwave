@@ -1007,6 +1007,45 @@ select:focus-visible {
   color: #ffffff88;
 }
 
+
+.oauth-actions {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.oauth-button {
+  width: 100%;
+}
+
+.oauth-button--disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.oauth-button--disabled:hover {
+  background: transparent;
+  border-color: #ffffff20;
+  color: var(--muted);
+}
+
+.auth-separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.auth-separator::before,
+.auth-separator::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #ffffff18;
+}
+
 .stack-form {
   display: grid;
   gap: 14px;
