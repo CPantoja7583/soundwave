@@ -83,7 +83,7 @@ DB_PASSWORD=postgres
 
 Si no quieres usar los archivos extra, tambien puedes copiar `.env.example` a `.env` y completar tus credenciales de PostgreSQL local.
 
-## Login administrador
+## Login, registro y OAuth
 
 SoundWave mantiene la lectura publica del catalogo, pero protege las acciones de administracion:
 
@@ -91,9 +91,9 @@ SoundWave mantiene la lectura publica del catalogo, pero protege las acciones de
 - crear, editar y eliminar canciones
 - crear, editar y eliminar albumes
 
-El login usa JWT en una cookie `HttpOnly`, asi funciona bien con las vistas Handlebars y formularios tradicionales.
+El login usa JWT en una cookie `HttpOnly`, asi funciona bien con las vistas Handlebars y formularios tradicionales. Cualquier persona puede crear una cuenta local desde `/register` y entrar para colaborar.
 
-Configura estas variables en `.env`:
+Configura estas variables base en `.env`:
 
 ```env
 JWT_SECRET=cambia_este_secreto_largo
@@ -108,7 +108,27 @@ Rutas web:
 
 - `GET /login`
 - `POST /login`
+- `GET /register`
+- `POST /register`
 - `POST /logout`
+
+OAuth con Google y Microsoft queda preparado, pero solo se activa si existen credenciales reales:
+
+```env
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK_URL=http://127.0.0.1:3000/auth/google/callback
+MICROSOFT_CLIENT_ID=
+MICROSOFT_CLIENT_SECRET=
+MICROSOFT_CALLBACK_URL=http://127.0.0.1:3000/auth/microsoft/callback
+```
+
+En produccion, las callback URLs deben usar el dominio real:
+
+```text
+https://tarea.espacioalerce.cl/auth/google/callback
+https://tarea.espacioalerce.cl/auth/microsoft/callback
+```
 
 La API tambien acepta JWT por header:
 

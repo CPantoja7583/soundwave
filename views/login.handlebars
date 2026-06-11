@@ -1,13 +1,29 @@
 <section class="panel form-panel auth-panel">
   <div class="panel-head">
-    <h1 class="form-title">Login admin</h1>
+    <h1 class="form-title">Iniciar sesión</h1>
   </div>
 
-  <p class="form-intro">Ingresa con la cuenta administradora para crear, editar o eliminar contenido.</p>
+  <p class="form-intro">Ingresa para crear, editar o eliminar contenido en SoundWave.</p>
 
   {{#if errorMessage}}
     <p class="error-text" aria-live="polite">{{errorMessage}}</p>
   {{/if}}
+
+  <div class="oauth-actions" aria-label="Opciones de inicio de sesión externas">
+    {{#if googleEnabled}}
+      <a class="button button--ghost oauth-button" href="/auth/google?next={{encodeURIComponent next}}">Continuar con Google</a>
+    {{else}}
+      <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Google no configurado</span>
+    {{/if}}
+
+    {{#if microsoftEnabled}}
+      <a class="button button--ghost oauth-button" href="/auth/microsoft?next={{encodeURIComponent next}}">Continuar con Microsoft</a>
+    {{else}}
+      <span class="button button--ghost oauth-button oauth-button--disabled" aria-disabled="true">Microsoft no configurado</span>
+    {{/if}}
+  </div>
+
+  <div class="auth-separator"><span>o usa tu email</span></div>
 
   <form class="stack-form" method="POST" action="/login">
     <input type="hidden" name="next" value="{{next}}" />
@@ -18,12 +34,13 @@
     </label>
 
     <label>
-      Password
+      Contraseña
       <input type="password" name="password" autocomplete="current-password" required />
     </label>
 
     <div class="form-actions">
       <button class="button" type="submit">Entrar</button>
+      <a class="button button--ghost" href="/register?next={{encodeURIComponent next}}">Crear cuenta</a>
       <a class="button button--ghost" href="/">Volver</a>
     </div>
   </form>

@@ -25,12 +25,21 @@ module.exports = (sequelize) => {
       },
       passwordHash: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
+      },
+      provider: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "local"
+      },
+      providerId: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       role: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "admin"
+        defaultValue: "user"
       }
     },
     {
