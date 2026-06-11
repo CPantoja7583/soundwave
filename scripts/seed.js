@@ -75,7 +75,7 @@ const seedData = [
       },
       {
         nombre: "Porfiado",
-        portada: "porfiado.jpeg",
+        portada: "Porfiado.jpg",
         canciones: [
           { titulo: "Lo malo de ser bueno", duracion: 241, reproducciones: 3800, youtube_url: "https://www.youtube.com/watch?v=S_roMeig-YQ" },
           { titulo: "Soló estoy sobreviviendo", duracion: 256, reproducciones: 3500, youtube_url: "https://www.youtube.com/watch?v=sX3T0SAhOug" }

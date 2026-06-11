@@ -20,8 +20,6 @@
 
     {{#if authUser}}
       <a class="detail-hero__edit" href="/artistas/{{artist.id}}/editar">Editar artista</a>
-    {{else}}
-      <a class="detail-hero__edit" href="/login?next=/artistas/{{artist.id}}/editar">Editar artista</a>
     {{/if}}
 
     <div class="detail-hero__content">
@@ -87,9 +85,6 @@
                     onsubmit="return confirm('Eliminar esta canción?');">
                     <button class="btn-danger" type="submit">Eliminar</button>
                   </form>
-                {{else}}
-                  <a class="btn-play" href="/login?next=/canciones/{{id}}/editar">Editar</a>
-                  <a class="btn-danger" href="/login?next=/artistas/{{../artist.id}}">Eliminar</a>
                 {{/if}}
               </div>
             </article>
@@ -119,8 +114,6 @@
                 <span>{{nombre}}</span>
                 {{#if @root.authUser}}
                   <a class="btn-play" href="/albums/{{id}}/editar">Editar</a>
-                {{else}}
-                  <a class="btn-play" href="/login?next=/albums/{{id}}/editar">Editar</a>
                 {{/if}}
               </li>
             {{/each}}
@@ -190,22 +183,6 @@
             onsubmit="return confirm('Eliminar este artista y todas sus canciones?');">
             <button class="btn-danger" type="submit">Eliminar artista</button>
           </form>
-        </div>
-      {{else}}
-        <div class="panel">
-          <div class="panel-head">
-            <h2>Agregar canci?n</h2>
-          </div>
-          <p class="empty-state">Inicia sesi?n para agregar canciones a este artista.</p>
-          <a class="btn-save" href="/login?next=/artistas/{{artist.id}}">Login para agregar canci?n</a>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head">
-            <h2>Zona de peligro</h2>
-          </div>
-          <p class="danger-copy">Inicia sesi?n para eliminar este artista.</p>
-          <a class="btn-danger" href="/login?next=/artistas/{{artist.id}}">Login para eliminar artista</a>
         </div>
       {{/if}}
     </aside>
